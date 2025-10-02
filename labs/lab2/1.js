@@ -8,10 +8,8 @@ void main(void) {
 `;
 
 const FSHADER = `
-precision mediump float;
-uniform vec4 u_FragColor;
 void main(void) {
-    gl_FragColor = u_FragColor;
+    gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
 }
 `
 
@@ -45,15 +43,6 @@ function main() {
         return;
     }
 
-    let u_FragColor = gl.getUniformLocation(gl.program, "u_FragColor");
-    if (!u_FragColor) {
-        console.log("Could not get u_FragColor");
-        return;
-    }
-
-    // Set the color to blue
-    gl.uniform4f(u_FragColor, 0.0, 1.0, 1.0, 1.0);
-
     const points = [
         -0.10,  0.20, // V0
         -0.25,  0.05,
@@ -62,52 +51,6 @@ function main() {
          0.15,  0.05,
          0.05,  0.15, // V5
     ];
-
-    const verticies = points.length / 2;
-
-    const arr = [
-        undefined, gl.POINTS, undefined, 
-        gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
-        gl.TRIANGLES, undefined, gl.TRIANGLE_FAN
-    ];
-
-    for (let mode_index = 0; mode_index < arr.length; mode_index++) {
-
-        const mode = arr[mode_index];
-
-        if (mode === undefined) continue;
-
-        // calculate translation
-        const tx = mode_index % 3 * 0.66 - 0.66;
-        const ty = -Math.floor(mode_index / 3) * 0.66 + 0.66;
-
-        gl.uniform4f(u_Translation, tx, ty, 0.0, 0.0);
-
-        buffer_points(gl, points, a_Position);
-
-        gl.drawArrays(mode, 0, verticies);
-
-        // Create and draw lines from the v0 to every vertex
-        if (mode === gl.TRIANGLE_FAN) {
-
-            let TRIANGLE_FAN_lines = [];
-            for (let i = 1; i < verticies; i++) {
-                TRIANGLE_FAN_lines.push(points[0], points[1]);
-                TRIANGLE_FAN_lines.push(points[i * 2], points[i * 2 + 1]);
-            }
-            console.log(TRIANGLE_FAN_lines);
-
-            buffer_points(gl, TRIANGLE_FAN_lines, a_Position);
-
-            gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
-
-            gl.drawArrays(gl.LINES, 0, TRIANGLE_FAN_lines.length / 2);
-
-            gl.uniform4f(u_FragColor, 0.0, 1.0, 1.0, 1.0);
-
-        }
-
-    }
 
     // Triangle strips have a different drawing order
     const strip_points = [
@@ -119,20 +62,31 @@ function main() {
          0.15,  0.05, // V4
     ];
 
-    buffer_points(gl, strip_points, a_Position);
+    const arr = [
+        undefined, gl.POINTS, undefined, 
+        gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, 
+        gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.TRIANGLE_FAN
+    ];
 
-    // hardcode translation
-    const tx = 0.0;
-    const ty = -0.66;
+    for (let mode_index = 0; mode_index < arr.length; mode_index++) {
 
-    gl.uniform4f(u_Translation, tx, ty, 0.0, 0.0);
+        // if using triangle strip use strip points
+        const local_points = mode_index == 7 ? strip_points : points;
 
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, strip_points.length / 2);
+        const mode = arr[mode_index];
 
-    gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
+        if (mode === undefined) continue;
 
-    gl.drawArrays(gl.LINE_STRIP, 0, verticies);
+        // calculate translation
+        const tx = mode_index % 3 * 0.66 - 0.66;
+        const ty = -Math.floor(mode_index / 3) * 0.66 + 0.66;
 
+        gl.uniform4f(u_Translation, tx, ty, 0.0, 0.0);
+
+        buffer_points(gl, local_points, a_Position);
+
+        gl.drawArrays(mode, 0, local_points.length / 2);
+    }
 }
 
 function buffer_points(gl, g_points, a_Position) {
