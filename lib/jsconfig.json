@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "checkJs": true,               // enable type-checking in JS
+        "noEmit": true,                // don’t output JS
+        "target": "ES2020",            // modern JS features
+        "module": "ESNext",            // allow import/export syntax
+        "lib": ["DOM", "ES2020"],      // DOM APIs + modern JS
+        "strict": false,                // strong type checking
+        "allowJs": true,                // allow JS files
+        "baseUrl": ".",                // project root as base
+        "paths": {
+            "@libs/*": ["libs/*"]        // optional alias for your libs
+        }
+    },
+    "include": [
+      "**/*.js"
+    ],
+}
