@@ -1,0 +1,1 @@
+Make a watch face that is a circle. Has a seconds hand that is a thin line around the edge of the circle that moves in real time. Then standard hour and minute hands. And finally a digital readout of the time in the center of the watch face. The digital readout should appear below all the other elements of the watch face.
