@@ -1,0 +1,1 @@
+Make an image with a sub-image in the center. The sub-image should be a smaller version of the main image, creating a recursive effect. Make the whole image rotate slowly over time.
