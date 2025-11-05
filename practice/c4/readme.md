@@ -1,0 +1,1 @@
+Make a shape in each quadrant of the screen using different colors each with a different texture mapped onto it and they should all rotate in different directions with one rotating in 2 axes.

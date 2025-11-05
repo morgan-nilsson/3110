@@ -1,0 +1,1 @@
+Split the screen into 2 and have a circle on one side and a square on the other side. The circle should change colors over time and the square should rotate around the center. The square should change its color based on the x, y position of the pixel on the screen.
