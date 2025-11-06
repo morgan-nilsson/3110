@@ -11,9 +11,10 @@ attribute vec2 a_TexCoord;
 uniform sampler2D u_Sampler;
 varying vec2 v_TexCoord;
 void main(void) {
-    gl_Position = u_TransformationMatrix * a_Position;
+    gl_Position = u_TransformMatrix * a_Position;
     v_TexCoord = a_TexCoord;
     gl_PointSize = 10.0;
+    v_TexCoord = a_TexCoord;
 }
 `;
 
@@ -23,7 +24,7 @@ uniform vec4 u_FragColor;
 uniform sampler2D u_Sampler;
 varying vec2 v_TexCoord;
 void main(void) {
-    gl_FragColor = ;
+    gl_FragColor = texture2D(u_Sampler, v_TexCoord);
 }
 `;
 
@@ -58,13 +59,19 @@ void main(void) {
 
     const u_TransformationMatrix = gl.getUniformLocation(gl.program, "u_TransformationMatrix");
     if (u_TransformationMatrix == null) {
-        console.log("Could not get u_TransformationMatrix");
+        console.log("Could not get u_TransformMatrix");
         return;
     }
 
     const u_FragColor = gl.getUniformLocation(gl.program, "u_FragColor");
     if (u_FragColor == null) {
         console.log("Cannot get u_Frag color");
+        return;
+    }
+
+    const u_Sampler = gl.getUniformLocation(gl.program, "u_Sampler");
+    if (u_Sampler == null) {
+        console.log("Failed to get u_Sampler");
         return;
     }
 
@@ -133,7 +140,7 @@ function buffer_points(gl, g_points, a_Position) {
 }
 
 /**
- * 
+ * This is for buffers that are structured gl_x, gl_y, tx_x, tx_y
  * @param {WebGLContext} gl 
  * @param {number} a_Position 
  * @param {number} n 
@@ -193,7 +200,7 @@ function initTextures(gl, image_src, callback, ...callbackArgs) {
     image.onload = function() {
         loadTexture(gl, texture, u_Sampler, image);
 
-        callback(callbackArgs)
+        callback(...callbackArgs)
     };
 
     return true;
@@ -221,3 +228,43 @@ function loadTexture(gl, texture, u_Sampler, image) {
 }
 
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(coords), gl.STATIC_DRAW);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 
+ * @param {number} centerX 
+ * @param {number} centerY 
+ * @param {number} radius 
+ * @param {number} vertexCount 
+ * @returns {number[]} Array of vertices in form [x1, y1, x2, y2]
+ */
+function makeCircleVertices(centerX, centerY, radius, vertexCount) {
+
+    const circleData = [];
+
+    for (let i = 0; i <= vertexCount; i++) {
+        const angle = i * 2 * Math.PI / vertexCount;
+        circleData.push(centerX + radius * Math.cos(angle));
+        circleData.push(centerY + radius * Math.sin(angle));
+    }
+    return circleData;
+}
