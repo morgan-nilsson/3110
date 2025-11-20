@@ -5,18 +5,20 @@
         PLEASE USE SUPPORTED WEBGL THING
     </canvas>
     <div>
-        <input type="text" id="near" placeholder="near">
-        <input type="text" id="far" placeholder="far">
-        <input type="text" id="fov" placeholder="fov">
-        <button onclick="changeCamera()">Submit</button>
-        <div>Penguin</div>
+        <div>Penguin (X Y Z)</div>
         <input type="range" min="-50" max="50" value="0" id="penguin_x">
         <input type="range" min="-50" max="50" value="0" id="penguin_y">
         <input type="range" min="-50" max="50" value="0" id="penguin_z">
-        <div>Camera</div>
+
+        <div>Camera (X Y Z)</div>
         <input type="range" min="-50" max="50" value="0" id="camera_x">
         <input type="range" min="-50" max="50" value="0" id="camera_y">
         <input type="range" min="-50" max="50" value="5" id="camera_z">
+
+        <div>Camera options (Near Far FOV)</div>
+        <input type="range" min="1" max="100" value="1" id="near">
+        <input type="range" min="0" max="100" value="100" id="far">
+        <input type="range" min="10" max="120" value="60" id="fov">
     </div>
     <script src="libs/cuon-matrix.js"></script>
     <script src="libs/cuon-utils.js"></script>

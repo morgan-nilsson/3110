@@ -101,19 +101,22 @@ function main() {
     scene.camera.position = [0, 0, 5];
     scene.drawScene(gl, a_Position, a_Color, u_ModelMatrix, u_transformMatrix);
 
-    changeCamera = function() {
-        const nearInput = document.getElementById('near').value;
-        const farInput = document.getElementById('far').value;
-        const fovInput = document.getElementById('fov').value;
-
-        const near = parseFloat(nearInput);
-        const far = parseFloat(farInput);
-        const fov = parseFloat(fovInput);
-
-        scene.camera.near = near;
-        scene.camera.far = far;
-        scene.camera.fov = fov;
+    const near_slider = document.getElementById('near');
+    const far_slider = document.getElementById('far');
+    const fov_slider = document.getElementById('fov');
     
+    near_slider.oninput = function() {
+        scene.camera.near = parseFloat(this.value);
+        scene.drawScene(gl, a_Position, a_Color, u_ModelMatrix, u_transformMatrix);
+    };
+
+    far_slider.oninput = function() {
+        scene.camera.far = parseFloat(this.value);
+        scene.drawScene(gl, a_Position, a_Color, u_ModelMatrix, u_transformMatrix);
+    };
+
+    fov_slider.oninput = function() {
+        scene.camera.fov = parseFloat(this.value);
         scene.drawScene(gl, a_Position, a_Color, u_ModelMatrix, u_transformMatrix);
     };
 
@@ -203,16 +206,16 @@ function createPenguinVertices() {
     vertices.push(...createSphereVertices(0.2, 10, 10, [1, 0.65, 0, 1], [-0.25, -0.5, 0.2]));
 
     // hands
-    vertices.push(...createSphereVertices(0.2, 10, 10, [1, 0.65, 0, 1], [ 0.8, 0, 0.5]));
-    vertices.push(...createSphereVertices(0.2, 10, 10, [1, 0.65, 0, 1], [-0.8, 0, 0.5]));
+    vertices.push(...createSphereVertices(0.2, 10, 10, [1, 0.65, 0, 1], [ 0.8, 0.1, 0.5]));
+    vertices.push(...createSphereVertices(0.2, 10, 10, [1, 0.65, 0, 1], [-0.8, 0.1, 0.5]));
 
     // arms
     vertices.push(...createCylinderVertices(0.2, 0.6, 10, [0.74, 0, 0, 1], [ 0.5, 0.1, 0.3], [1, 0, 1]));
     vertices.push(...createCylinderVertices(0.2, 0.6, 10, [0.74, 0, 0, 1], [-0.5, 0.1, 0.3], [1, 0, -1]));
 
     // coat connect arms and hands
-    vertices.push(...createTorusVertices(0.15, 0.09, 20, 20, [1, 1, 1, 1], [0.8, 0, 0.5], [0.6, 0, 1.4]));
-    vertices.push(...createTorusVertices(0.15, 0.09, 20, 20, [1, 1, 1, 1], [-0.8, 0, 0.5], [0.6, 0, -1.4]));
+    vertices.push(...createTorusVertices(0.15, 0.09, 20, 20, [1, 1, 1, 1], [0.8, 0.1, 0.5], [0.6, 0, 1.4]));
+    vertices.push(...createTorusVertices(0.15, 0.09, 20, 20, [1, 1, 1, 1], [-0.8, 0.1, 0.5], [0.6, 0, -1.4]));
 
     // hammer
     vertices.push(...createCylinderVertices(0.12, 0.8, 10, [0.55, 0.27, 0.07, 1], [-0.8, 0.2, 0.7])); // handle
