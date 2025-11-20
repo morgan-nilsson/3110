@@ -88,7 +88,7 @@ function main() {
     for (let x = -100; x <= 100; x += 8) {
         for (let z = -100; z <= 100; z += 8) {
             const sphereEntity = scene.spawnEntity(sphereModel);
-            sphereEntity.position = [x, 1, z];
+            sphereEntity.position = [x, 0, z];
         }
     }
 
