@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<body onload="main()">
+    <canvas id="canvas" width="600" height="600">
+        PLEASE USE SUPPORTED WEBGL THING
+    </canvas>
+    <div>
+        <input type="text" id="near" placeholder="near">
+        <input type="text" id="far" placeholder="far">
+        <input type="text" id="fov" placeholder="fov">
+        <button onclick="changeCamera()">Submit</button>
+        <div>Penguin</div>
+        <input type="range" min="-50" max="50" value="0" id="penguin_x">
+        <input type="range" min="-50" max="50" value="0" id="penguin_y">
+        <input type="range" min="-50" max="50" value="0" id="penguin_z">
+        <div>Camera</div>
+        <input type="range" min="-50" max="50" value="0" id="camera_x">
+        <input type="range" min="-50" max="50" value="0" id="camera_y">
+        <input type="range" min="-50" max="50" value="5" id="camera_z">
+    </div>
+    <script src="libs/cuon-matrix.js"></script>
+    <script src="libs/cuon-utils.js"></script>
+    <script src="libs/webgl-debug.js"></script>
+    <script src="libs/webgl-utils.js"></script>
+    <script src="shapes.js"></script>
+    <script src="scene.js"></script>
+    <script src="index.js"></script>
+</body>
