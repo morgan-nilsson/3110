@@ -80,15 +80,15 @@ function main() {
     const planeVertices = createPlaneVertices(80, [0, 0.5, 0, 1.0]);
     const planeModel = new Model(gl, planeVertices);
     const planeEntity = scene.spawnEntity(planeModel);
-    planeEntity.position = [0, -1, 0];
+    planeEntity.position = [0, -3, 0];
 
     // add spheres in plane
     const sphereVertices = createSphereVertices(1, 10, 10, [0.2, 0.7, 0.2, 1.0]);
     const sphereModel = new Model(gl, sphereVertices);
-    for (let x = -100; x <= 100; x += 8) {
-        for (let z = -100; z <= 100; z += 8) {
+    for (let x = -40; x <= 40; x += 8) {
+        for (let z = -40; z <= 40; z += 8) {
             const sphereEntity = scene.spawnEntity(sphereModel);
-            sphereEntity.position = [x, 0, z];
+            sphereEntity.position = [x, -2, z];
         }
     }
 
