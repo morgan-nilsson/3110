@@ -36,7 +36,7 @@ const VSHADER = `
         // Ambient
         vec3 lighting = u_AmbientColor;
 
-        // Directional lights
+        // Directional
         vec3 L = normalize(-u_DirectionalDir);
         float diff = max(dot(normal, L), 0.0);
         lighting += u_DirectionalColor * diff;
@@ -162,9 +162,9 @@ function main() {
     );
 
     scene.ambient_light_color = [1, 1, 1];
-    scene.ambient_light_intensity = 0.6;
-    scene.addDirectionalLightSource([0, 1, 0], [1, 1.0, 1.0], 0.8);
-    scene.addLightSource([3, 4, 3], [1, 1, 1], 1);
+    scene.ambient_light_intensity = 0;
+    const directional_light_source = scene.addDirectionalLightSource([0, -1, 0], [1, 1.0, 1.0], 0.8);
+    const light_source = scene.addLightSource([3, 4, 3], [1, 1, 1], 1);
 
     // draw the plane on the ground
     const planeVertices = createPlaneVertices(80, [0, 0.5, 0, 1.0]);
@@ -247,6 +247,64 @@ function main() {
         scene.camera.position[2] = parseFloat(this.value) / 10;
         scene.drawScene();
     };
+
+    const light_x_slider = document.getElementById('light_x');
+    const light_y_slider = document.getElementById('light_y');
+    const light_z_slider = document.getElementById('light_z');
+    const light_intensity_slider = document.getElementById('light_intensity');
+
+    light_x_slider.oninput = function() {
+        light_source.position[0] = parseFloat(this.value);
+        scene.drawScene();
+    };
+
+    light_y_slider.oninput = function() {
+        light_source.position[1] = parseFloat(this.value);
+        scene.drawScene();
+    };
+
+    light_z_slider.oninput = function() {
+        light_source.position[2] = parseFloat(this.value);
+        scene.drawScene();
+    };
+
+    light_intensity_slider.oninput = function() {
+        light_source.intensity = parseFloat(this.value);
+        scene.drawScene();
+    };
+
+    const directional_light_x_slider = document.getElementById('dir_x');
+    const directional_light_y_slider = document.getElementById('dir_y');
+    const directional_light_z_slider = document.getElementById('dir_z');
+    const directional_light_intensity_slider = document.getElementById('dir_intensity');
+
+    directional_light_x_slider.oninput = function() {
+        directional_light_source.direction[0] = parseFloat(this.value);
+        scene.drawScene();
+    };
+
+    directional_light_y_slider.oninput = function() {
+        directional_light_source.direction[1] = parseFloat(this.value);
+        scene.drawScene();
+    };
+
+    directional_light_z_slider.oninput = function() {
+        directional_light_source.direction[2] = parseFloat(this.value);
+        scene.drawScene();
+    };
+
+    directional_light_intensity_slider.oninput = function() {
+        directional_light_source.intensity = parseFloat(this.value);
+        scene.drawScene();
+    };
+
+    const ambient_light_intensity_slider = document.getElementById('ambient_intensity');
+    ambient_light_intensity_slider.oninput = function() {
+        scene.ambient_light_intensity = parseFloat(this.value);
+        scene.drawScene();
+    };
+
+
 }
 
 function createPenguinVertices() {

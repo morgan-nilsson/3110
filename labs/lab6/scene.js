@@ -1,6 +1,7 @@
 /**
  * @import * from './libs/cuon-utils.js'
  * @import * from './libs/cuon-matrix.js'
+ * @import * from './entity.js'
  */
 
 class Scene {

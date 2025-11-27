@@ -1,8 +1,3 @@
-const EntityType = Object.freeze({
-    STATIC: 'static',
-    DYNAMIC: 'dynamic',
-});
-
 class Entity {
 
     /** @type {Model} */
@@ -100,17 +95,7 @@ class Model {
         for (let v of vertices) {
             positions.push(...v.position);
             colors.push(...(v.color ?? [1,1,1,1]));
-        }
-
-        for (let i = 0; i < this.vertexCount; i += 3) {
-            const normal = computeFaceNormalOfTriangle(
-                positions.slice((i + 0) * 3, (i + 0) * 3 + 3),
-                positions.slice((i + 1) * 3, (i + 1) * 3 + 3),
-                positions.slice((i + 2) * 3, (i + 2) * 3 + 3),
-            );
-            normals.splice((i + 0) * 3, 3, ...normal);
-            normals.splice((i + 1) * 3, 3, ...normal);
-            normals.splice((i + 2) * 3, 3, ...normal);
+            normals.push(...(v.normal ?? [0,0,0]));
         }
 
         this.vertexBuffer = gl.createBuffer();
@@ -136,10 +121,10 @@ class Vertex {
      * @param {number[] | undefined} normal 
      * @param {number[] | undefined} uv 
      */
-    constructor(position, color = undefined, uv = undefined) {
+    constructor(position, color = undefined, normal = undefined, uv = undefined) {
         this.position = position;
         this.color = color;
-        this.normal = undefined;
+        this.normal = normal;
         this.uv = uv;
     }
 }
