@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<body onload="main()">
+    <canvas id="canvas" width="600" height="600">
+        PLEASE USE SUPPORTED WEBGL THING
+    </canvas>
+    <div>
+        <div>Penguin (X Y Z)</div>
+        <input type="range" min="-50" max="50" value="0" id="penguin_x">
+        <input type="range" min="-50" max="50" value="0" id="penguin_y">
+        <input type="range" min="-50" max="50" value="0" id="penguin_z">
+
+        <div>Camera (X Y Z)</div>
+        <input type="range" min="-50" max="50" value="0" id="camera_x">
+        <input type="range" min="-50" max="50" value="0" id="camera_y">
+        <input type="range" min="-50" max="50" value="5" id="camera_z">
+
+        <div>Camera options (Near Far FOV)</div>
+        <input type="range" min="1" max="100" value="1" id="near">
+        <input type="range" min="0" max="100" value="100" id="far">
+        <input type="range" min="10" max="120" value="60" id="fov">
+
+        <div>Light Position (X Y Z Intensity)</div>
+        <input type="range" min="-50" max="50" value="3" id="light_x">
+        <input type="range" min="-50" max="50" value="4" id="light_y">
+        <input type="range" min="-50" max="50" value="3" id="light_z">
+        <input type="range" min="0" max="5" value="1" id="light_intensity">
+
+        <div>Directional Light(X Y Z Intensity)</div>
+        <input type="range" min="-1" max="1" value="0" step="0.1" id="dir_x">
+        <input type="range" min="-1" max="1" value="-1" step="0.1" id="dir_y">
+        <input type="range" min="-1" max="1" value="0" step="0.1" id="dir_z">
+        <input type="range" min="0" max="5" value="0.8" step="0.1" id="dir_intensity">
+
+        <div>Ambient light Intensity</div>
+        <input type="range" min="0" max="1" value="0" step="0.1" id="ambient_intensity">
+    </div>
+    <script src="libs/cuon-matrix.js"></script>
+    <script src="libs/cuon-utils.js"></script>
+    <script src="libs/webgl-debug.js"></script>
+    <script src="libs/webgl-utils.js"></script>
+    <script src="shapes.js"></script>
+    <script src="entity.js"></script>
+    <script src="scene.js"></script>
+    <script src="index.js"></script>
+</body>

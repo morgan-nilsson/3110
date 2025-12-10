@@ -5,62 +5,6 @@
  * @import * from './shapes.js'
  */
 
-const VSHADER = `
-    attribute vec4 a_Position;
-    uniform mat4 u_ModelMatrix;
-    uniform mat4 u_TransformMatrix;
-
-    attribute vec4 a_Color;
-    varying vec4 v_Color;
-
-    attribute vec3 a_Normal;
-    uniform mat3 u_NormalMatrix;
-
-    uniform vec3 u_AmbientColor;
-
-    // Directional lights
-    uniform vec3 u_DirectionalColors;
-    uniform vec3 u_DirectionalDirs;
-
-    // Point lights
-    attribute a_PointLightCount;
-    const int MAX_POINT_LIGHTS = 40;
-    uniform vec3 u_PointColors[MAX_POINT_LIGHTS];
-    uniform vec3 u_PointPoss[MAX_POINT_LIGHTS];
-
-    void main() {
-
-        vec4 worldPos = u_ModelMatrix * a_Position;
-        gl_Position = u_TransformMatrix * worldPos;
-        
-        vec3 normal = normalize(u_NormalMatrix * a_Normal);
-
-        // Ambient
-        vec3 lighting = u_AmbientColor;
-
-        // Directional
-        vec3 L = normalize(-u_DirectionalDir);
-        float diff = max(dot(normal, L), 0.0);
-        lighting += u_DirectionalColor * diff;
-
-        for (int i = 0; i < a_PointLightCount; i++) {
-            vec3 Lp = normalize(u_PointPoss[i] - worldPos.xyz);
-            float diffP = max(dot(normal, Lp), 0.0);
-            lighting += u_PointColors[i] * diffP;
-        }
-
-        v_Color = vec4(a_Color.rgb * lighting, a_Color.a);
-    }
-`
-
-const FSHADER = `
-    precision mediump float;
-    varying vec4 v_Color;
-    void main() {
-        gl_FragColor = v_Color;
-    }
-`
-
 let scene = null;
 
 function main() {
@@ -70,130 +14,60 @@ function main() {
         return;
     }
 
-    const gl = getWebGLContext(canvas);
-    if (!gl) {
-        console.log('Failed to get the rendering context for WebGL');
-        return;
-    }
-
-    if (!initShaders(gl, VSHADER, FSHADER)) {
-        console.log('Failed to initialize shaders.');
-        return;
-    }
-
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-
-    const a_Position = gl.getAttribLocation(gl.program, 'a_Position');
-    if (a_Position < 0) {
-        console.log('Failed to get the storage location of a_Position');
-        return;
-    }
-
-    const a_Color = gl.getAttribLocation(gl.program, 'a_Color');
-    if (a_Color < 0) {
-        console.log('Failed to get the storage location of a_Color');
-        return;
-    }
-
-    const u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
-    if (!u_ModelMatrix) {
-        console.log('Failed to get the storage location of u_ModelMatrix');
-        return;
-    }
-
-    const u_TransformMatrix = gl.getUniformLocation(gl.program, 'u_TransformMatrix');
-    if (!u_TransformMatrix) {
-        console.log('Failed to get the storage location of u_TransformMatrix');
-        return;
-    }
-
-    gl.enable(gl.DEPTH_TEST);
-
-    const u_AmbientColor = gl.getUniformLocation(gl.program, 'u_AmbientColor');
-    if (!u_AmbientColor) {
-        console.log('Failed to get the storage location of u_AmbientColor');
-        return;
-    }
-
-    const u_DirectionalColor = gl.getUniformLocation(gl.program, 'u_DirectionalColor');
-    if (!u_DirectionalColor) {
-        console.log('Failed to get the storage location of u_DirectionalColor');
-        return;
-    }
-    const u_DirectionalDir = gl.getUniformLocation(gl.program, 'u_DirectionalDir');
-    if (!u_DirectionalDir) {
-        console.log('Failed to get the storage location of u_DirectionalDir');
-        return;
-    }
-
-    const u_PointColor = gl.getUniformLocation(gl.program, 'u_PointColor');
-    if (!u_PointColor) {
-        console.log('Failed to get the storage location of u_PointColor');
-        return;
-    }
-    const u_PointPos = gl.getUniformLocation(gl.program, 'u_PointPos');
-    if (!u_PointPos) {
-        console.log('Failed to get the storage location of u_PointPos');
-        return;
-    }
-
-    const a_normal = gl.getAttribLocation(gl.program, 'a_Normal');
-    if (a_normal < 0) {
-        console.log('Failed to get the storage location of a_Normal');
-        return;
-    }
-    const u_NormalMatrix = gl.getUniformLocation(gl.program, 'u_NormalMatrix');
-    if (!u_NormalMatrix) {
-        console.log('Failed to get the storage location of u_NormalMatrix');
-        return;
-    }
-
-    scene = new Scene(
-        gl,
-        a_Position,
-        a_Color,
-        u_ModelMatrix,
-        u_TransformMatrix,
-        u_AmbientColor,
-        u_DirectionalColor,
-        u_DirectionalDir,
-        u_PointColor,
-        u_PointPos,
-        a_normal,
-        u_NormalMatrix,
-    );
+    scene = new Scene(canvas);
 
     scene.ambient_light_color = [1, 1, 1];
-    scene.ambient_light_intensity = 0;
-    const directional_light_source = scene.addDirectionalLightSource([0, -1, 0], [1, 1.0, 1.0], 0.8);
-    const light_source = scene.addLightSource([3, 4, 3], [1, 1, 1], 1);
+    scene.ambient_light_intensity = 0.1;
+    
+    const sunLight = scene.addDirectionalLightSource([0, -1, 0], [1, 1.0, 0.9], 0.8);
+    const moonLight = scene.addDirectionalLightSource([1, -0.5, 0.5], [0.7, 0.8, 1.0], 0.3);
+    
+    const mainLight = scene.addLightSource([3, 4, 3], [1, 1, 1], 1.0);
+    const accentLight = scene.addLightSource([-2, 2, 5], [1, 0.5, 0.2], 0.6);
+    const fillLight = scene.addLightSource([0, 6, -3], [0.2, 0.5, 1], 0.4);
+    const rimLight = scene.addLightSource([5, 1, -2], [1, 0.2, 0.8], 0.5);
 
-    // draw the plane on the ground
+    // checkerboard texture
+    const checkerboardTexture = createProceduralTexture(scene.gl, 256, 256, (ctx, width, height) => {
+        const tileSize = 32;
+        for (let x = 0; x < width; x += tileSize) {
+            for (let y = 0; y < height; y += tileSize) {
+                const isEven = ((x / tileSize) + (y / tileSize)) % 2 === 0;
+                ctx.fillStyle = isEven ? '#ffffff' : '#000000';
+                ctx.fillRect(x, y, tileSize, tileSize);
+            }
+        }
+    });
+
+    // Create and add scene objects
     const planeVertices = createPlaneVertices(80, [0, 0.5, 0, 1.0]);
-    const planeModel = new Model(gl, planeVertices);
-    const planeEntity = scene.spawnEntity(planeModel);
+    const planeEntity = scene.spawnEntity(planeVertices);
     planeEntity.position = [0, -3, 0];
 
-    // add spheres in plane
+    const texturedPlaneVertices = createPlaneVertices(20, [1, 1, 1, 1.0]);
+    const texturedPlaneModel = new Model(scene.gl, texturedPlaneVertices, checkerboardTexture);
+    const texturedPlaneEntity = scene.spawnEntity(texturedPlaneModel);
+    texturedPlaneEntity.position = [30, -1, 0];
+
     const sphereVertices = createSphereVertices(1, 10, 10, [0.2, 0.7, 0.2, 1.0]);
-    const sphereModel = new Model(gl, sphereVertices);
     for (let x = -40; x <= 40; x += 8) {
         for (let z = -40; z <= 40; z += 8) {
-            const sphereEntity = scene.spawnEntity(sphereModel);
+            const sphereEntity = scene.spawnEntity(sphereVertices, { smooth: true });
             sphereEntity.position = [x, -2, z];
         }
     }
 
     const penguinVertices = createPenguinVertices();
-    const penguinModel = new Model(gl, penguinVertices);
-
-    const penguinEntity = scene.spawnEntity(penguinModel);
+    const penguinEntity = scene.spawnEntity(penguinVertices, { smooth: true });
     penguinEntity.position = [0, 0, 0];
 
     scene.camera.position = [0, 0, 5];
     scene.drawScene();
 
+    setupControls(scene, penguinEntity, mainLight, sunLight);
+}
+
+function setupControls(scene, penguinEntity, light_source, directional_light_source) {
     const near_slider = document.getElementById('near');
     const far_slider = document.getElementById('far');
     const fov_slider = document.getElementById('fov');
@@ -306,8 +180,6 @@ function main() {
         scene.ambient_light_intensity = parseFloat(this.value);
         scene.drawScene();
     };
-
-
 }
 
 function createPenguinVertices() {
