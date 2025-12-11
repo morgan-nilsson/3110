@@ -3,13 +3,13 @@
  */
 function createPlaneVertices(size = 1, color = [1,1,1,1]) {
     return [
-        { position: [-size,0,-size], color, uv: [0, 0] },
-        { position: [ size,0,-size], color, uv: [1, 0] },
-        { position: [ size,0, size], color, uv: [1, 1] },
+        { position: [-size,0,-size], color, uv: [0, 0], normal: [0, 1, 0] },
+        { position: [ size,0,-size], color, uv: [1, 0], normal: [0, 1, 0] },
+        { position: [ size,0, size], color, uv: [1, 1], normal: [0, 1, 0] },
 
-        { position: [-size,0,-size], color, uv: [0, 0] },
-        { position: [ size,0, size], color, uv: [1, 1] },
-        { position: [-size,0, size], color, uv: [0, 1] },
+        { position: [-size,0,-size], color, uv: [0, 0], normal: [0, 1, 0] },
+        { position: [ size,0, size], color, uv: [1, 1], normal: [0, 1, 0] },
+        { position: [-size,0, size], color, uv: [0, 1], normal: [0, 1, 0] },
     ];
 }
 
@@ -527,7 +527,7 @@ function createSmallDeskVertices(color = [0.4, 0.2, 0.1, 1.0], offset = [0, 0, 0
 }
 
 /**
- * Helper function to create a box cube with proper UV coordinates
+ * Helper function to create a box cube with proper UV coordinates and normals
  * @param {number} width 
  * @param {number} height 
  * @param {number} depth 
@@ -542,53 +542,53 @@ function createBoxVertices(width, height, depth, color = [1,1,1,1], offset = [0,
     const [x, y, z] = offset;
     
     return [
-        // Front face
-        { position: [x-w, y-h, z+d], color, uv: [0, 0] },
-        { position: [x+w, y-h, z+d], color, uv: [1, 0] },
-        { position: [x+w, y+h, z+d], color, uv: [1, 1] },
-        { position: [x-w, y-h, z+d], color, uv: [0, 0] },
-        { position: [x+w, y+h, z+d], color, uv: [1, 1] },
-        { position: [x-w, y+h, z+d], color, uv: [0, 1] },
+        // Front face (normal pointing toward +Z)
+        { position: [x-w, y-h, z+d], color, uv: [0, 0], normal: [0, 0, 1] },
+        { position: [x+w, y-h, z+d], color, uv: [1, 0], normal: [0, 0, 1] },
+        { position: [x+w, y+h, z+d], color, uv: [1, 1], normal: [0, 0, 1] },
+        { position: [x-w, y-h, z+d], color, uv: [0, 0], normal: [0, 0, 1] },
+        { position: [x+w, y+h, z+d], color, uv: [1, 1], normal: [0, 0, 1] },
+        { position: [x-w, y+h, z+d], color, uv: [0, 1], normal: [0, 0, 1] },
         
-        // Back face
-        { position: [x+w, y-h, z-d], color, uv: [0, 0] },
-        { position: [x-w, y-h, z-d], color, uv: [1, 0] },
-        { position: [x-w, y+h, z-d], color, uv: [1, 1] },
-        { position: [x+w, y-h, z-d], color, uv: [0, 0] },
-        { position: [x-w, y+h, z-d], color, uv: [1, 1] },
-        { position: [x+w, y+h, z-d], color, uv: [0, 1] },
+        // Back face (normal pointing toward -Z)
+        { position: [x+w, y-h, z-d], color, uv: [0, 0], normal: [0, 0, -1] },
+        { position: [x-w, y-h, z-d], color, uv: [1, 0], normal: [0, 0, -1] },
+        { position: [x-w, y+h, z-d], color, uv: [1, 1], normal: [0, 0, -1] },
+        { position: [x+w, y-h, z-d], color, uv: [0, 0], normal: [0, 0, -1] },
+        { position: [x-w, y+h, z-d], color, uv: [1, 1], normal: [0, 0, -1] },
+        { position: [x+w, y+h, z-d], color, uv: [0, 1], normal: [0, 0, -1] },
         
-        // Top face
-        { position: [x-w, y+h, z-d], color, uv: [0, 0] },
-        { position: [x-w, y+h, z+d], color, uv: [1, 0] },
-        { position: [x+w, y+h, z+d], color, uv: [1, 1] },
-        { position: [x-w, y+h, z-d], color, uv: [0, 0] },
-        { position: [x+w, y+h, z+d], color, uv: [1, 1] },
-        { position: [x+w, y+h, z-d], color, uv: [0, 1] },
+        // Top face (normal pointing toward +Y)
+        { position: [x-w, y+h, z-d], color, uv: [0, 0], normal: [0, 1, 0] },
+        { position: [x-w, y+h, z+d], color, uv: [1, 0], normal: [0, 1, 0] },
+        { position: [x+w, y+h, z+d], color, uv: [1, 1], normal: [0, 1, 0] },
+        { position: [x-w, y+h, z-d], color, uv: [0, 0], normal: [0, 1, 0] },
+        { position: [x+w, y+h, z+d], color, uv: [1, 1], normal: [0, 1, 0] },
+        { position: [x+w, y+h, z-d], color, uv: [0, 1], normal: [0, 1, 0] },
         
-        // Bottom face
-        { position: [x-w, y-h, z+d], color, uv: [0, 0] },
-        { position: [x-w, y-h, z-d], color, uv: [1, 0] },
-        { position: [x+w, y-h, z-d], color, uv: [1, 1] },
-        { position: [x-w, y-h, z+d], color, uv: [0, 0] },
-        { position: [x+w, y-h, z-d], color, uv: [1, 1] },
-        { position: [x+w, y-h, z+d], color, uv: [0, 1] },
+        // Bottom face (normal pointing toward -Y)
+        { position: [x-w, y-h, z+d], color, uv: [0, 0], normal: [0, -1, 0] },
+        { position: [x-w, y-h, z-d], color, uv: [1, 0], normal: [0, -1, 0] },
+        { position: [x+w, y-h, z-d], color, uv: [1, 1], normal: [0, -1, 0] },
+        { position: [x-w, y-h, z+d], color, uv: [0, 0], normal: [0, -1, 0] },
+        { position: [x+w, y-h, z-d], color, uv: [1, 1], normal: [0, -1, 0] },
+        { position: [x+w, y-h, z+d], color, uv: [0, 1], normal: [0, -1, 0] },
         
-        // Right face
-        { position: [x+w, y-h, z+d], color, uv: [0, 0] },
-        { position: [x+w, y-h, z-d], color, uv: [1, 0] },
-        { position: [x+w, y+h, z-d], color, uv: [1, 1] },
-        { position: [x+w, y-h, z+d], color, uv: [0, 0] },
-        { position: [x+w, y+h, z-d], color, uv: [1, 1] },
-        { position: [x+w, y+h, z+d], color, uv: [0, 1] },
+        // Right face (normal pointing toward +X)
+        { position: [x+w, y-h, z+d], color, uv: [0, 0], normal: [1, 0, 0] },
+        { position: [x+w, y-h, z-d], color, uv: [1, 0], normal: [1, 0, 0] },
+        { position: [x+w, y+h, z-d], color, uv: [1, 1], normal: [1, 0, 0] },
+        { position: [x+w, y-h, z+d], color, uv: [0, 0], normal: [1, 0, 0] },
+        { position: [x+w, y+h, z-d], color, uv: [1, 1], normal: [1, 0, 0] },
+        { position: [x+w, y+h, z+d], color, uv: [0, 1], normal: [1, 0, 0] },
         
-        // Left face
-        { position: [x-w, y-h, z-d], color, uv: [0, 0] },
-        { position: [x-w, y-h, z+d], color, uv: [1, 0] },
-        { position: [x-w, y+h, z+d], color, uv: [1, 1] },
-        { position: [x-w, y-h, z-d], color, uv: [0, 0] },
-        { position: [x-w, y+h, z+d], color, uv: [1, 1] },
-        { position: [x-w, y+h, z-d], color, uv: [0, 1] },
+        // Left face (normal pointing toward -X)
+        { position: [x-w, y-h, z-d], color, uv: [0, 0], normal: [-1, 0, 0] },
+        { position: [x-w, y-h, z+d], color, uv: [1, 0], normal: [-1, 0, 0] },
+        { position: [x-w, y+h, z+d], color, uv: [1, 1], normal: [-1, 0, 0] },
+        { position: [x-w, y-h, z-d], color, uv: [0, 0], normal: [-1, 0, 0] },
+        { position: [x-w, y+h, z+d], color, uv: [1, 1], normal: [-1, 0, 0] },
+        { position: [x-w, y+h, z-d], color, uv: [0, 1], normal: [-1, 0, 0] },
     ];
 }
 
@@ -829,39 +829,6 @@ function createOfficeChairVertices(baseColor = [0.2, 0.2, 0.2, 1.0], seatColor =
         vertex.position = [newX, newY, newZ];
     });
     vertices.push(...supportVertices);
-    
-    // Improved backrest support structure
-    const armSupportHeight = 0.28;
-    const armSupportThickness = 0.018;
-    
-    // Left support arm
-    const leftArmVertices = createCylinderVertices(armSupportThickness, armSupportHeight, 12, baseColor);
-    leftArmVertices.forEach(vertex => {
-        const [newX, newY, newZ] = rotateAndOffset(vertex.position[0] - seatWidth/2 + 0.06, vertex.position[1] + seatHeight + armSupportHeight/2, vertex.position[2] - seatDepth/4);
-        vertex.position = [newX, newY, newZ];
-    });
-    vertices.push(...leftArmVertices);
-    
-    // Right support arm  
-    const rightArmVertices = createCylinderVertices(armSupportThickness, armSupportHeight, 12, baseColor);
-    rightArmVertices.forEach(vertex => {
-        const [newX, newY, newZ] = rotateAndOffset(vertex.position[0] + seatWidth/2 - 0.06, vertex.position[1] + seatHeight + armSupportHeight/2, vertex.position[2] - seatDepth/4);
-        vertex.position = [newX, newY, newZ];
-    });
-    vertices.push(...rightArmVertices);
-    
-    // Horizontal backrest support
-    const backSupportVertices = createCylinderVertices(armSupportThickness, backrestWidth * 0.85, 12, baseColor);
-    backSupportVertices.forEach(vertex => {
-        // Rotate to be horizontal
-        const rotX = vertex.position[2];
-        const rotY = vertex.position[1];
-        const rotZ = vertex.position[0];
-        
-        const [newX, newY, newZ] = rotateAndOffset(rotX, rotY + seatHeight + armSupportHeight, rotZ + backrestZ);
-        vertex.position = [newX, newY, newZ];
-    });
-    vertices.push(...backSupportVertices);
     
     // armrests
     const armrestWidth = 0.08;

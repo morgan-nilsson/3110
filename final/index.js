@@ -222,7 +222,7 @@ async function main() {
     cameraController = new CameraController(scene.camera, canvas);
 
     scene.ambient_light_color = [1, 1, 1];
-    scene.ambient_light_intensity = 0.3;
+    scene.ambient_light_intensity = 0.1;
     
     // Create office textures
     const floorTexture = createFloorTexture(scene.gl);
@@ -837,7 +837,8 @@ async function main() {
     const pedestalVertices = createCylinderVertices(pedestalRadius, pedestalHeight, 16, [0.7, 0.5, 0.3, 1]);
     const pedestalModel = new Model(scene.gl, pedestalVertices);
     const pedestalEntity = scene.spawnEntity(pedestalModel);
-    pedestalEntity.position = [tableX, pedestalHeight/2, tableZ];
+    const pedestalHeightHalf = pedestalHeight/2;
+    pedestalEntity.position = [tableX, pedestalHeightHalf, tableZ];
 
     // Circular base plate
     const basePlateRadius = pedestalRadius * 1.8;
@@ -1425,9 +1426,121 @@ async function main() {
     const stand2Entity = scene.spawnEntity(stand2Model);
     stand2Entity.position = [workstation2X, deskHeight + monitorStandHeight/2, workstation2Z + deskDepth/2 - monitorDepth];
 
+    // Create ceiling lights throughout the office
+    createCeilingLights(scene, wallHeight, officeWidth, officeDepth);
+
     scene.camera.position = [13, 2, 0];
     scene.camera.target = [0, 0, 0];
     scene.drawScene();
+}
+
+/**
+ * Create ceiling light fixtures for the office
+ * @param {Scene} scene 
+ */
+function createCeilingLights(scene, wallHeight, officeWidth, officeDepth) {
+    const lightHeight = wallHeight - 0.2; // Slightly below ceiling
+    const lightWidth = 2.5;
+    const lightDepth = 0.6;
+    const lightThickness = 0.15;
+    
+    // Main office area lights - exact same positions as point lights
+    const mainAreaLights = [
+        [-8, -6], [-8, 0], [-8, 6],
+        //[-2, -6], [-2, 0], [-2, 6],
+        [2, -6], [2, 0], [2, 6],
+        //[8, -6], [8, 0], [8, 6]
+    ];
+    
+    mainAreaLights.forEach(([x, z]) => {
+        createSingleCeilingLight(x, lightHeight, z, lightWidth, lightDepth, lightThickness, wallHeight);
+        addLightCeilingLightsToScene(scene, x, lightHeight - 0.1, z);
+    });
+    
+    // Kitchen area lights - exact same positions as point lights
+    const kitchenLights = [
+        [11, 6],// [15, 6],
+    ];
+    
+    kitchenLights.forEach(([x, z]) => {
+        createSingleCeilingLight(x, lightHeight, z, lightWidth, lightDepth, lightThickness, wallHeight);
+        addLightCeilingLightsToScene(scene, x, lightHeight - 0.1, z);
+    });
+    
+    // Recreation room lights - exact same positions as point lights
+    const recRoomLights = [
+        [11, -6],// [15, -6]
+    ];
+    
+    recRoomLights.forEach(([x, z]) => {
+        createSingleCeilingLight(x, lightHeight, z, lightWidth, lightDepth, lightThickness, wallHeight);
+        addLightCeilingLightsToScene(scene, x, lightHeight - 0.1, z);
+    });
+    
+    // Meeting room lights - exact same positions as point lights
+    const meetingRoomLights = [
+        [-13, -6], // Room 1
+        [-13, 0],  // Room 2  
+        [-13, 6]   // Room 3
+    ];
+    
+    meetingRoomLights.forEach(([x, z]) => {
+        createSingleCeilingLight(x, lightHeight, z, lightWidth * 0.8, lightDepth, lightThickness, wallHeight);
+        addLightCeilingLightsToScene(scene, x, lightHeight - 0.1, z);
+    });
+}
+
+/**
+ * 
+ * @param {Scene} scene 
+ */
+function addLightCeilingLightsToScene(scene, x, y, z) {
+    scene.addLightSource(
+        [x, y, z],
+        [1.0, 1.0, 0.9],
+        0.4,
+    )
+}
+
+/**
+ * Create a single ceiling light fixture
+ */
+function createSingleCeilingLight(x, y, z, width, depth, thickness, wallHeight) {
+    // Light housing
+    const housingVertices = createBoxVertices(width, thickness, depth, [0.85, 0.85, 0.9, 1]);
+    const housingModel = new Model(scene.gl, housingVertices);
+    const housingEntity = scene.spawnEntity(housingModel);
+    housingEntity.position = [x, y, z];
+    
+    //const diffuserVertices = createBoxVertices(width * 0.95, thickness * 0.1, depth * 0.95, [0.95, 0.95, 1.0, 0.9]);
+    //const diffuserModel = new Model(scene.gl, diffuserVertices);
+    //const diffuserEntity = scene.spawnEntity(diffuserModel);
+    //diffuserEntity.position = [x, y - thickness/2 + 0.02, z];
+    
+    // Support chains
+    const chainRadius = 0.005;
+    const chainLength = 0.3;
+    const chainOffsets = [
+        [-width/2 * 0.8, depth/2 * 0.8],
+        [width/2 * 0.8, depth/2 * 0.8],
+        [-width/2 * 0.8, -depth/2 * 0.8],
+        [width/2 * 0.8, -depth/2 * 0.8]
+    ];
+    
+    chainOffsets.forEach(([offsetX, offsetZ]) => {
+        const chainVertices = createCylinderVertices(chainRadius, chainLength, 6, [0.4, 0.4, 0.4, 1]);
+        const chainModel = new Model(scene.gl, chainVertices);
+        const chainEntity = scene.spawnEntity(chainModel);
+        chainEntity.position = [x + offsetX, y + thickness/2 + chainLength/2, z + offsetZ];
+    });
+    
+    // Ceiling mounting points
+    chainOffsets.forEach(([offsetX, offsetZ]) => {
+        const mountVertices = createCylinderVertices(0.02, 0.01, 8, [0.3, 0.3, 0.3, 1]);
+        const mountModel = new Model(scene.gl, mountVertices);
+        const mountEntity = scene.spawnEntity(mountModel);
+        mountEntity.position = [x + offsetX, wallHeight - 0.01, z + offsetZ];
+    });
 }
 
 function createPenguinVertices() {

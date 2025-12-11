@@ -18,7 +18,7 @@ const VSHADER = `
     uniform vec3 u_AmbientColor;
 
     // Multiple light support
-    #define MAX_POINT_LIGHTS 8
+    #define MAX_POINT_LIGHTS 20
     #define MAX_DIRECTIONAL_LIGHTS 4
 
     uniform int u_numPointLights;
@@ -87,7 +87,9 @@ const FSHADER = `
 
     void main() {
         if (u_UseTexture) {
-            gl_FragColor = texture2D(u_Sampler, v_TexCoord);
+            vec4 textureColor = texture2D(u_Sampler, v_TexCoord);
+            // Apply lighting by multiplying texture color with the lit vertex color
+            gl_FragColor = vec4(textureColor.rgb * v_Color.rgb, textureColor.a);
         } else {
             gl_FragColor = v_Color;
         }
@@ -277,7 +279,7 @@ class Scene {
         this.#ambient_light_color = [1.0, 1.0, 1.0];
         
         // Set maximum light limits
-        this.maxPointLights = 8;
+        this.maxPointLights = 20;
         this.maxDirectionalLights = 4;
     }
 
