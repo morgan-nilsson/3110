@@ -456,14 +456,14 @@ function createCeilingTexture(gl) {
 }
 
 /**
- * Create a window model
- * @param {number} width Window width
- * @param {number} height Window height 
- * @param {number} depth Window depth (thickness)
+ * Create a picture model
+ * @param {number} width Picture width
+ * @param {number} height Picture height 
+ * @param {number} depth Picture depth (thickness)
  * @param {number[]} offset Position offset [x,y,z]
- * @returns {Vertex[]} Window vertices
+ * @returns {Vertex[]} Picture vertices
  */
-function createWindowVertices(width = 2, height = 1.5, depth = 0.05, offset = [0, 0, 0]) {
+function createPictureVertices(width = 2, height = 1.5, depth = 0.05, offset = [0, 0, 0]) {
     const vertices = [];
     
     vertices.push(...createBoxVertices(width, height, depth, [1, 1, 1, 1], offset));

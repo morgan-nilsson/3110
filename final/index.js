@@ -231,7 +231,10 @@ async function main() {
     const kitchenFloorTexture = createKitchenFloorTexture(scene.gl);
     const cabinetTexture = createCabinetTexture(scene.gl);
     
-    const windowTexture = await createTexture(scene.gl, 'textures/sky.jpg');
+    const pictureTexture1 = await createTexture(scene.gl, 'textures/blueflower.jpg');
+    const pictureTexture2 = await createTexture(scene.gl, 'textures/redflower.jpg');
+    const pictureTexture3 = await createTexture(scene.gl, 'textures/yellowflower.jpg');
+    const pictureTexture4 = await createTexture(scene.gl, 'textures/sky.jpg');
 
     const officeWidth = 35;
     const officeDepth = 20;
@@ -283,31 +286,37 @@ async function main() {
     const rightWallEntity = scene.spawnEntity(rightWallModel);
     rightWallEntity.position = [officeWidth / 2, wallHeight / 2, 0];
 
-    const windowWidth = 2.5;
-    const windowHeight = 1.8;
-    const windowYPosition = wallHeight / 2;
+    const pictureWidth = 2.5;
+    const pictureHeight = 1.8;
+    const pictureYPosition = wallHeight / 2;
 
-    const window1Vertices = createWindowVertices(windowWidth, windowHeight, 0.1, [0, 0, 0]);
-    const window1Model = new Model(scene.gl, window1Vertices, windowTexture);
-    const window1Entity = scene.spawnEntity(window1Model);
-    window1Entity.position = [-6, windowYPosition, -officeDepth / 2 + 0.05];
+    const picture1Vertices = createPictureVertices(pictureWidth, pictureHeight, 0.1, [0, 0, 0]);
+    const picture1Model = new Model(scene.gl, picture1Vertices, pictureTexture1);
+    const picture1Entity = scene.spawnEntity(picture1Model);
+    picture1Entity.position = [-6, pictureYPosition, -officeDepth / 2 + 0.05];
 
-    const window2Vertices = createWindowVertices(windowWidth, windowHeight, 0.1, [0, 0, 0]);
-    const window2Model = new Model(scene.gl, window2Vertices, windowTexture);
-    const window2Entity = scene.spawnEntity(window2Model);
-    window2Entity.position = [6, windowYPosition, -officeDepth / 2 + 0.05];
+    const picture2Vertices = createPictureVertices(pictureWidth, pictureHeight, 0.1, [0, 0, 0]);
+    const picture2Model = new Model(scene.gl, picture2Vertices, pictureTexture2);
+    const picture2Entity = scene.spawnEntity(picture2Model);
+    picture2Entity.position = [6, pictureYPosition, -officeDepth / 2 + 0.05];
 
-    const window3Vertices = createWindowVertices(windowWidth, windowHeight, 0.1, [0, 0, 0]);
-    const window3Model = new Model(scene.gl, window3Vertices, windowTexture);
-    const window3Entity = scene.spawnEntity(window3Model);
-    window3Entity.position = [-officeWidth / 2 + 0.05, windowYPosition, -3];
-    window3Entity.rotation = [0, 90, 0];
+    const picture3Vertices = createPictureVertices(pictureWidth, pictureHeight, 0.1, [0, 0, 0]);
+    const picture3Model = new Model(scene.gl, picture3Vertices, pictureTexture3);
+    const picture3Entity = scene.spawnEntity(picture3Model);
+    picture3Entity.position = [-officeWidth / 2 + 0.05, pictureYPosition, -1];
+    picture3Entity.rotation = [0, 90, 0];
 
-    const window4Vertices = createWindowVertices(windowWidth, windowHeight, 0.1, [0, 0, 0]);
-    const window4Model = new Model(scene.gl, window4Vertices, windowTexture);
-    const window4Entity = scene.spawnEntity(window4Model);
-    window4Entity.position = [-officeWidth / 2 + 0.05, windowYPosition, 3];
-    window4Entity.rotation = [0, 90, 0];
+    const picture4Vertices = createPictureVertices(pictureWidth, pictureHeight, 0.1, [0, 0, 0]);
+    const picture4Model = new Model(scene.gl, picture4Vertices, pictureTexture4);
+    const picture4Entity = scene.spawnEntity(picture4Model);
+    picture4Entity.position = [-officeWidth / 2 + 0.05, pictureYPosition, 6];
+    picture4Entity.rotation = [0, 90, 0];
+
+    const picture5Vertices = createPictureVertices(pictureWidth, pictureHeight, 0.1, [0, 0, 0]);
+    const picture5Model = new Model(scene.gl, picture1Vertices, pictureTexture1);
+    const picture5Entity = scene.spawnEntity(picture5Model);
+    picture5Entity.position = [-officeWidth / 2 + 0.05, pictureYPosition, -8];
+    picture5Entity.rotation = [0, 90, 0];
 
     const interiorWallHeight = wallHeight;
     const interiorWallThickness = 0.08;
@@ -1230,7 +1239,8 @@ async function main() {
     const desk2TopVertices = createBoxVertices(deskWidth, deskTopThickness, deskDepth, [0.7, 0.5, 0.3, 1]);
     const desk2TopModel = new Model(scene.gl, desk2TopVertices);
     const desk2TopEntity = scene.spawnEntity(desk2TopModel);
-    desk2TopEntity.position = [workstation2X, deskHeight - deskTopThickness/2, workstation2Z];
+    const desk2TopHeight = deskHeight - deskTopThickness/2;
+    desk2TopEntity.position = [workstation2X, desk2TopHeight, workstation2Z];
 
     // Workstation 2 legs
     for (let i = 0; i < 2; i++) {
