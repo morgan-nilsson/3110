@@ -132,6 +132,7 @@ class CameraController {
             movement[2] += right[2];
             moved = true;
         }
+
         
         // Handle vertical movement in fly mode (Space/Shift)
         if (this.flyMode) {
@@ -159,6 +160,15 @@ class CameraController {
             this.camera.position[0] += movement[0];
             this.camera.position[1] += movement[1];
             this.camera.position[2] += movement[2];
+
+            const xMaxes = 35 / 2;
+            const zMaxes = 20 / 2;
+
+            // clamp inside of room
+            if (this.camera.position[0] > xMaxes) this.camera.position[0] = xMaxes - 0.2
+            if (this.camera.position[0] < -xMaxes) this.camera.position[0] = -xMaxes + 0.2
+            if (this.camera.position[2] > zMaxes) this.camera.position[2] = zMaxes - 0.2
+            if (this.camera.position[2] < -zMaxes) this.camera.position[2] = -zMaxes + 0.2
             
             if (!this.flyMode) {
                 this.camera.position[1] = this.walkingHeight;
@@ -218,11 +228,13 @@ async function main() {
     }
 
     scene = new Scene(canvas);
+
+    scene.camera.far = 40;
     
     cameraController = new CameraController(scene.camera, canvas);
 
     scene.ambient_light_color = [1, 1, 1];
-    scene.ambient_light_intensity = 0.13;
+    scene.ambient_light_intensity = 0.15;
     
     // Create office textures
     const floorTexture = createFloorTexture(scene.gl);
@@ -457,27 +469,27 @@ async function main() {
     // Chairs for room 1
     const chairOffset = 1.8; // Distance from table center to chair
     
-    // Chair 1 (front of table)
-    const room1Chair1Vertices = createOfficeChairVertices(
-        [0.2, 0.2, 0.2, 1.0],
-        [0.1, 0.3, 0.1, 1.0],
-        [0, 0, 0],
-        0
-    );
-    const room1Chair1Model = new Model(scene.gl, room1Chair1Vertices);
-    const room1Chair1Entity = scene.spawnEntity(room1Chair1Model);
-    room1Chair1Entity.position = [room1X, 0, room1Z - chairOffset];
+    //// Chair 1 (front of table)
+    //const room1Chair1Vertices = createOfficeChairVertices(
+    //    [0.2, 0.2, 0.2, 1.0],
+    //    [0.1, 0.3, 0.1, 1.0],
+    //    [0, 0, 0],
+    //    0
+    //);
+    //const room1Chair1Model = new Model(scene.gl, room1Chair1Vertices);
+    //const room1Chair1Entity = scene.spawnEntity(room1Chair1Model);
+    //room1Chair1Entity.position = [room1X, 0, room1Z - chairOffset];
 
-    // Chair 2 (back of table)
-    const room1Chair2Vertices = createOfficeChairVertices(
-        [0.2, 0.2, 0.2, 1.0],
-        [0.1, 0.3, 0.1, 1.0],
-        [0, 0, 0],
-        180
-    );
-    const room1Chair2Model = new Model(scene.gl, room1Chair2Vertices);
-    const room1Chair2Entity = scene.spawnEntity(room1Chair2Model);
-    room1Chair2Entity.position = [room1X, 0, room1Z + chairOffset];
+    //// Chair 2 (back of table)
+    //const room1Chair2Vertices = createOfficeChairVertices(
+    //    [0.2, 0.2, 0.2, 1.0],
+    //    [0.1, 0.3, 0.1, 1.0],
+    //    [0, 0, 0],
+    //    180
+    //);
+    //const room1Chair2Model = new Model(scene.gl, room1Chair2Vertices);
+    //const room1Chair2Entity = scene.spawnEntity(room1Chair2Model);
+    //room1Chair2Entity.position = [room1X, 0, room1Z + chairOffset];
 
     // MEETING ROOM 2 (Middle room)
     const room2X = meetingRoomsX;
@@ -513,16 +525,16 @@ async function main() {
     const room2Chair1Entity = scene.spawnEntity(room2Chair1Model);
     room2Chair1Entity.position = [room2X, 0, room2Z - chairOffset];
 
-    // Chair 2 (back of table)
-    const room2Chair2Vertices = createOfficeChairVertices(
-        [0.2, 0.2, 0.2, 1.0],
-        [0.3, 0.1, 0.1, 1.0],
-        [0, 0, 0],
-        180
-    );
-    const room2Chair2Model = new Model(scene.gl, room2Chair2Vertices);
-    const room2Chair2Entity = scene.spawnEntity(room2Chair2Model);
-    room2Chair2Entity.position = [room2X, 0, room2Z + chairOffset];
+    //// Chair 2 (back of table)
+    //const room2Chair2Vertices = createOfficeChairVertices(
+    //    [0.2, 0.2, 0.2, 1.0],
+    //    [0.3, 0.1, 0.1, 1.0],
+    //    [0, 0, 0],
+    //    180
+    //);
+    //const room2Chair2Model = new Model(scene.gl, room2Chair2Vertices);
+    //const room2Chair2Entity = scene.spawnEntity(room2Chair2Model);
+    //room2Chair2Entity.position = [room2X, 0, room2Z + chairOffset];
 
     // MEETING ROOM 3 (Back room)
     const room3X = meetingRoomsX;
@@ -547,27 +559,27 @@ async function main() {
         }
     }
 
-    // Chairs for room 3
-    const room3Chair1Vertices = createOfficeChairVertices(
-        [0.2, 0.2, 0.2, 1.0],
-        [0.1, 0.1, 0.3, 1.0],
-        [0, 0, 0],
-        0
-    );
-    const room3Chair1Model = new Model(scene.gl, room3Chair1Vertices);
-    const room3Chair1Entity = scene.spawnEntity(room3Chair1Model);
-    room3Chair1Entity.position = [room3X, 0, room3Z - chairOffset];
+    //// Chairs for room 3
+    //const room3Chair1Vertices = createOfficeChairVertices(
+    //    [0.2, 0.2, 0.2, 1.0],
+    //    [0.1, 0.1, 0.3, 1.0],
+    //    [0, 0, 0],
+    //    0
+    //);
+    //const room3Chair1Model = new Model(scene.gl, room3Chair1Vertices);
+    //const room3Chair1Entity = scene.spawnEntity(room3Chair1Model);
+    //room3Chair1Entity.position = [room3X, 0, room3Z - chairOffset];
 
-    // Chair 2 (back of table)
-    const room3Chair2Vertices = createOfficeChairVertices(
-        [0.2, 0.2, 0.2, 1.0],
-        [0.1, 0.1, 0.3, 1.0],
-        [0, 0, 0],
-        180
-    );
-    const room3Chair2Model = new Model(scene.gl, room3Chair2Vertices);
-    const room3Chair2Entity = scene.spawnEntity(room3Chair2Model);
-    room3Chair2Entity.position = [room3X, 0, room3Z + chairOffset];
+    //// Chair 2 (back of table)
+    //const room3Chair2Vertices = createOfficeChairVertices(
+    //    [0.2, 0.2, 0.2, 1.0],
+    //    [0.1, 0.1, 0.3, 1.0],
+    //    [0, 0, 0],
+    //    180
+    //);
+    //const room3Chair2Model = new Model(scene.gl, room3Chair2Vertices);
+    //const room3Chair2Entity = scene.spawnEntity(room3Chair2Model);
+    //room3Chair2Entity.position = [room3X, 0, room3Z + chairOffset];
 
     const kitchenWidth = 12; // Width of kitchen area
     const kitchenDepth = 8;  // Depth of kitchen area
@@ -607,7 +619,7 @@ async function main() {
     const cabinetWidth = 6.0;
     const counterHeight = 0.05;
     
-    // Basic counter position
+    // counter position
     const counterX = kitchenX;
     const counterZ = kitchenZ + kitchenDepth/2 - cabinetDepth/2;
 
@@ -616,7 +628,7 @@ async function main() {
     const basicCabinetEntity = scene.spawnEntity(basicCabinetModel);
     basicCabinetEntity.position = [counterX, cabinetHeight / 2, counterZ];
 
-    // Counter top for the basic cabinet
+    // Counter top for the cabinet
     const basicCounterVertices = createBoxVertices(cabinetWidth + 0.1, counterHeight, cabinetDepth + 0.1, [0.9, 0.9, 0.9, 1]);
     const basicCounterModel = new Model(scene.gl, basicCounterVertices);
     const basicCounterEntity = scene.spawnEntity(basicCounterModel);
@@ -667,12 +679,12 @@ async function main() {
     const sideDoorEntity = scene.spawnEntity(sideDoorModel);
     sideDoorEntity.position = [sideCabinetX - cabinetDepth/2 - cabinetDoorThickness/2, cabinetHeight/2, sideCabinetZ];
 
-    // Side door handle
-    const sideHandleVertices = createCylinderVertices(0.015, 0.08, 8, [0.8, 0.8, 0.8, 1]);
-    const sideHandleModel = new Model(scene.gl, sideHandleVertices);
-    const sideHandleEntity = scene.spawnEntity(sideHandleModel);
-    sideHandleEntity.position = [sideCabinetX - cabinetDepth/2 - cabinetDoorThickness - 0.02, cabinetHeight/2, sideCabinetZ - 0.2];
-    sideHandleEntity.rotation = [0, 0, 90];
+    //// Side door handle
+    //const sideHandleVertices = createCylinderVertices(0.015, 0.08, 8, [0.8, 0.8, 0.8, 1]);
+    //const sideHandleModel = new Model(scene.gl, sideHandleVertices);
+    //const sideHandleEntity = scene.spawnEntity(sideHandleModel);
+    //sideHandleEntity.position = [sideCabinetX - cabinetDepth/2 - cabinetDoorThickness - 0.02, cabinetHeight/2, sideCabinetZ - 0.2];
+    //sideHandleEntity.rotation = [0, 0, 90];
 
     // Add full lower cabinets along the right wall
     const rightWallCabinetWidth = 5.0; // Length along the right wall
@@ -787,12 +799,12 @@ async function main() {
     const ovenDoorEntity = scene.spawnEntity(ovenDoorModel);
     ovenDoorEntity.position = [stoveX, ovenDoorY, stoveZ - stoveDepth/2 - ovenDoorThickness/2];
 
-    // Oven door handle
-    const ovenHandleVertices = createCylinderVertices(0.015, 0.4, 8, [0.2, 0.2, 0.2, 1]);
-    const ovenHandleModel = new Model(scene.gl, ovenHandleVertices);
-    const ovenHandleEntity = scene.spawnEntity(ovenHandleModel);
-    ovenHandleEntity.position = [stoveX, ovenDoorY + ovenDoorHeight * 0.35, stoveZ - stoveDepth/2 - ovenDoorThickness - 0.02];
-    ovenHandleEntity.rotation = [0, 0, 90];
+    //// Oven door handle
+    //const ovenHandleVertices = createCylinderVertices(0.015, 0.4, 8, [0.2, 0.2, 0.2, 1]);
+    //const ovenHandleModel = new Model(scene.gl, ovenHandleVertices);
+    //const ovenHandleEntity = scene.spawnEntity(ovenHandleModel);
+    //ovenHandleEntity.position = [stoveX, ovenDoorY + ovenDoorHeight * 0.35, stoveZ - stoveDepth/2 - ovenDoorThickness - 0.02];
+    //ovenHandleEntity.rotation = [0, 0, 90];
 
     // knobs
     //for (let i = 0; i < 4; i++) {
@@ -853,16 +865,16 @@ async function main() {
     const chair1Entity = scene.spawnEntity(chair1Model);
     chair1Entity.position = [tableX + chairDistance, 0, tableZ];
 
-    // c2 positioned on the opposite side of the table, facing the table
-    const chair2Vertices = createOfficeChairVertices(
-        [0.2, 0.2, 0.2, 1.0],
-        [0.1, 0.1, 0.3, 1.0],
-        [0, 0, 0],
-        270
-    );
-    const chair2Model = new Model(scene.gl, chair2Vertices);
-    const chair2Entity = scene.spawnEntity(chair2Model);
-    chair2Entity.position = [tableX - chairDistance, 0, tableZ];
+    //// c2 positioned on the opposite side of the table, facing the table
+    //const chair2Vertices = createOfficeChairVertices(
+    //    [0.2, 0.2, 0.2, 1.0],
+    //    [0.1, 0.1, 0.3, 1.0],
+    //    [0, 0, 0],
+    //    270
+    //);
+    //const chair2Model = new Model(scene.gl, chair2Vertices);
+    //const chair2Entity = scene.spawnEntity(chair2Model);
+    //chair2Entity.position = [tableX - chairDistance, 0, tableZ];
 
     const recRoomWidth = 12; // Width of rec room area
     const recRoomDepth = 8;  // Depth of rec room area
@@ -1018,31 +1030,31 @@ async function main() {
     const chairCushionEntity = scene.spawnEntity(chairCushionModel);
     chairCushionEntity.position = [armchairX, couchSeatHeight + cushionHeight/2, armchairZ];
 
-    // Side table next to armchair
-    const sideTableSize = 0.5;
-    const sideTableHeight = 0.55;
-    const sideTableX = armchairX + armchairSeatWidth/2 + armchairArmWidth + sideTableSize;
-    const sideTableZ = armchairZ + armchairSeatDepth/2;
+    //// Side table next to armchair
+    //const sideTableSize = 0.5;
+    //const sideTableHeight = 0.55;
+    //const sideTableX = armchairX + armchairSeatWidth/2 + armchairArmWidth + sideTableSize;
+    //const sideTableZ = armchairZ + armchairSeatDepth/2;
     
-    // Side table top
-    const sideTableTopVertices = createBoxVertices(sideTableSize, coffeeTableTopThickness, sideTableSize, [0.6, 0.4, 0.2, 1]);
-    const sideTableTopModel = new Model(scene.gl, sideTableTopVertices);
-    const sideTableTopEntity = scene.spawnEntity(sideTableTopModel);
-    sideTableTopEntity.position = [sideTableX, sideTableHeight - coffeeTableTopThickness/2, sideTableZ];
+    //// Side table top
+    //const sideTableTopVertices = createBoxVertices(sideTableSize, coffeeTableTopThickness, sideTableSize, [0.6, 0.4, 0.2, 1]);
+    //const sideTableTopModel = new Model(scene.gl, sideTableTopVertices);
+    //const sideTableTopEntity = scene.spawnEntity(sideTableTopModel);
+    //sideTableTopEntity.position = [sideTableX, sideTableHeight - coffeeTableTopThickness/2, sideTableZ];
 
-    // Side table legs
-    const sideTableLegHeight = sideTableHeight - coffeeTableTopThickness;
-    for (let i = 0; i < 2; i++) {
-        for (let j = 0; j < 2; j++) {
-            const legX = sideTableX - sideTableSize/2 + 0.1 + (i * (sideTableSize - 0.2));
-            const legZ = sideTableZ - sideTableSize/2 + 0.1 + (j * (sideTableSize - 0.2));
-            
-            const legVertices = createBoxVertices(legWidth, sideTableLegHeight, legWidth, [0.5, 0.3, 0.15, 1]);
-            const legModel = new Model(scene.gl, legVertices);
-            const legEntity = scene.spawnEntity(legModel);
-            legEntity.position = [legX, sideTableLegHeight/2, legZ];
-        }
-    }
+    //// Side table legs
+    //const sideTableLegHeight = sideTableHeight - coffeeTableTopThickness;
+    //for (let i = 0; i < 2; i++) {
+    //    for (let j = 0; j < 2; j++) {
+    //        const legX = sideTableX - sideTableSize/2 + 0.1 + (i * (sideTableSize - 0.2));
+    //        const legZ = sideTableZ - sideTableSize/2 + 0.1 + (j * (sideTableSize - 0.2));
+    //        
+    //        const legVertices = createBoxVertices(legWidth, sideTableLegHeight, legWidth, [0.5, 0.3, 0.15, 1]);
+    //        const legModel = new Model(scene.gl, legVertices);
+    //        const legEntity = scene.spawnEntity(legModel);
+    //        legEntity.position = [legX, sideTableLegHeight/2, legZ];
+    //    }
+    //}
 
     // Floor lamp
     const lampX = recRoomX - recRoomWidth/2 + 1;
@@ -1068,13 +1080,13 @@ async function main() {
     const lampShadeEntity = scene.spawnEntity(lampShadeModel);
     lampShadeEntity.position = [lampX, lampHeight - 0.2, lampZ];
 
-    const penguinVertices = createPenguinVertices();
-    const penguinModel = new Model(scene.gl, penguinVertices);
-    const penguinEntity = scene.spawnEntity(penguinModel);
+    //const penguinVertices = createPenguinVertices();
+    //const penguinModel = new Model(scene.gl, penguinVertices);
+    //const penguinEntity = scene.spawnEntity(penguinModel);
 
-    penguinEntity.position = [recRoomX + 4.5, 0.7, recRoomZ + 3.4];
-    penguinEntity.scale = [0.4, 0.4, 0.4];
-    penguinEntity.rotation = [0, 180, 0];
+    //penguinEntity.position = [recRoomX + 4.5, 0.7, recRoomZ + 3.4];
+    //penguinEntity.scale = [0.4, 0.4, 0.4];
+    //penguinEntity.rotation = [0, 180, 0];
 
     const workingAreaX = -2;
     const workingAreaZ = 0;
@@ -1112,7 +1124,7 @@ async function main() {
     const confChairSpacing = 1.5; // Spacing between chairs along the table
     
     // Chairs along the long sides of the table
-    const numChairsPerSide = 3;
+    const numChairsPerSide = 2;
     
     // Chairs on the left side
     for (let i = 0; i < numChairsPerSide; i++) {
@@ -1201,7 +1213,7 @@ async function main() {
     const confChair2Spacing = 1.5; // Spacing between chairs along the table
     
     // Chairs along the long sides of table 2 (now front and back)
-    const numChairs2PerSide = 3;
+    const numChairs2PerSide = 2;
     
     // Chairs on the front side of table 2
     for (let i = 0; i < numChairs2PerSide; i++) {
@@ -1353,23 +1365,23 @@ async function main() {
     const workChair1Entity = scene.spawnEntity(workChair1Model);
     workChair1Entity.position = [workstation1X, 0, workstation1Z - deskDepth/2 - 0.8];
 
-    // Monitor on workstation 1
-    const monitorWidth = 0.5;
-    const monitorHeight = 0.35;
-    const monitorDepth = 0.08;
-    const monitorStandHeight = 0.15;
+    //// Monitor on workstation 1
+    //const monitorWidth = 0.5;
+    //const monitorHeight = 0.35;
+    //const monitorDepth = 0.08;
+    //const monitorStandHeight = 0.15;
     
-    // Monitor screen
-    const monitorVertices = createBoxVertices(monitorWidth, monitorHeight, monitorDepth, [0.1, 0.1, 0.1, 1]);
-    const monitorModel = new Model(scene.gl, monitorVertices);
-    const monitorEntity = scene.spawnEntity(monitorModel);
-    monitorEntity.position = [workstation1X, deskHeight + monitorStandHeight + monitorHeight/2, workstation1Z + deskDepth/2 - monitorDepth];
+    //// Monitor screen
+    //const monitorVertices = createBoxVertices(monitorWidth, monitorHeight, monitorDepth, [0.1, 0.1, 0.1, 1]);
+    //const monitorModel = new Model(scene.gl, monitorVertices);
+    //const monitorEntity = scene.spawnEntity(monitorModel);
+    //monitorEntity.position = [workstation1X, deskHeight + monitorStandHeight + monitorHeight/2, workstation1Z + deskDepth/2 - monitorDepth];
     
-    // Monitor stand
-    const standVertices = createCylinderVertices(0.08, monitorStandHeight, 8, [0.3, 0.3, 0.3, 1]);
-    const standModel = new Model(scene.gl, standVertices);
-    const standEntity = scene.spawnEntity(standModel);
-    standEntity.position = [workstation1X, deskHeight + monitorStandHeight/2, workstation1Z + deskDepth/2 - monitorDepth];
+    //// Monitor stand
+    //const standVertices = createCylinderVertices(0.08, monitorStandHeight, 8, [0.3, 0.3, 0.3, 1]);
+    //const standModel = new Model(scene.gl, standVertices);
+    //const standEntity = scene.spawnEntity(standModel);
+    //standEntity.position = [workstation1X, deskHeight + monitorStandHeight/2, workstation1Z + deskDepth/2 - monitorDepth];
 
     const workstation2X = workingAreaX + 6;
     const workstation2Z = workingAreaZ - 8;
@@ -1405,16 +1417,16 @@ async function main() {
     const workChair2Entity = scene.spawnEntity(workChair2Model);
     workChair2Entity.position = [workstation2X, 0, workstation2Z - deskDepth/2 - 0.8];
 
-    // Monitor and stand for workstation 2
-    const monitor2Vertices = createBoxVertices(monitorWidth, monitorHeight, monitorDepth, [0.1, 0.1, 0.1, 1]);
-    const monitor2Model = new Model(scene.gl, monitor2Vertices);
-    const monitor2Entity = scene.spawnEntity(monitor2Model);
-    monitor2Entity.position = [workstation2X, deskHeight + monitorStandHeight + monitorHeight/2, workstation2Z + deskDepth/2 - monitorDepth];
+    //// Monitor and stand for workstation 2
+    //const monitor2Vertices = createBoxVertices(monitorWidth, monitorHeight, monitorDepth, [0.1, 0.1, 0.1, 1]);
+    //const monitor2Model = new Model(scene.gl, monitor2Vertices);
+    //const monitor2Entity = scene.spawnEntity(monitor2Model);
+    //monitor2Entity.position = [workstation2X, deskHeight + monitorStandHeight + monitorHeight/2, workstation2Z + deskDepth/2 - monitorDepth];
     
-    const stand2Vertices = createCylinderVertices(0.08, monitorStandHeight, 8, [0.3, 0.3, 0.3, 1]);
-    const stand2Model = new Model(scene.gl, standVertices);
-    const stand2Entity = scene.spawnEntity(stand2Model);
-    stand2Entity.position = [workstation2X, deskHeight + monitorStandHeight/2, workstation2Z + deskDepth/2 - monitorDepth];
+    //const stand2Vertices = createCylinderVertices(0.08, monitorStandHeight, 8, [0.3, 0.3, 0.3, 1]);
+    //const stand2Model = new Model(scene.gl, standVertices);
+    //const stand2Entity = scene.spawnEntity(stand2Model);
+    //stand2Entity.position = [workstation2X, deskHeight + monitorStandHeight/2, workstation2Z + deskDepth/2 - monitorDepth];
 
     // Create ceiling lights throughout the office
     createCeilingLights(scene, wallHeight);

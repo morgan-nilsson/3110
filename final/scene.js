@@ -258,6 +258,8 @@ class Scene {
         this.#u_directionalLightColors = this.#gl.getUniformLocation(this.#gl.program, 'u_directionalLightColors');
         this.#u_directionalLightIntensities = this.#gl.getUniformLocation(this.#gl.program, 'u_directionalLightIntensities');
 
+        this.lightsDirty = false;
+
         // Set up WebGL state
         this.#gl.clearColor(0.0, 0.0, 0.0, 1.0);
         this.#gl.enable(this.#gl.DEPTH_TEST);
@@ -338,6 +340,7 @@ class Scene {
     addDirectionalLightSource(direction, color, intensity) {
         const light = new DirectionalLightSource(direction, color, intensity);
         this.#directional_light_sources.push(light);
+        this.lightsDirty = true;
         return light;
     }
 
@@ -351,6 +354,7 @@ class Scene {
     addLightSource(position, color, intensity) {
         const light = new LightSource(position, color, intensity);
         this.#light_sources.push(light);
+        this.lightsDirty = true;
         return light;
     }
 
@@ -412,6 +416,10 @@ class Scene {
     }
 
     #updateLightUniforms() {
+        if (this.lightsDirty == false) {
+            return
+        }
+
         const gl = this.#gl;
 
         // Set number of active lights
