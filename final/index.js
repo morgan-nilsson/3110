@@ -625,18 +625,18 @@ async function main() {
     basicCounterEntity.position = [counterX, cabinetHeight + counterHeight/2, counterZ];
 
     // Doors to the counter
-    const doorWidth = cabinetWidth / 4;
-    const doorHeight = cabinetHeight * 0.8;
-    const doorThickness = 0.02;
+    const cabinetDoorWidth = cabinetWidth / 4;
+    const cabinetDoorHeight = cabinetHeight * 0.8;
+    const cabinetDoorThickness = 0.02;
     
     // 4 doors across the length of the counter
     for (let i = 0; i < 4; i++) {
-        const doorX = counterX - cabinetWidth/2 + doorWidth/2 + (i * doorWidth);
+        const doorX = counterX - cabinetWidth/2 + cabinetDoorWidth/2 + (i * cabinetDoorWidth);
         const doorY = cabinetHeight/2;
-        const doorZ = counterZ - cabinetDepth/2 - doorThickness/2;
+        const doorZ = counterZ - cabinetDepth/2 - cabinetDoorThickness/2;
 
         // Door panel
-        const doorVertices = createBoxVertices(doorWidth * 0.9, doorHeight, doorThickness, [1, 1, 1, 1]);
+        const doorVertices = createBoxVertices(cabinetDoorWidth * 0.9, cabinetDoorHeight, cabinetDoorThickness, [1, 1, 1, 1]);
         const doorModel = new Model(scene.gl, doorVertices, cabinetTexture);
         const doorEntity = scene.spawnEntity(doorModel);
         doorEntity.position = [doorX, doorY, doorZ];
@@ -645,7 +645,7 @@ async function main() {
         const handleVertices = createCylinderVertices(0.015, 0.08, 8, [0.8, 0.8, 0.8, 1]);
         const handleModel = new Model(scene.gl, handleVertices);
         const handleEntity = scene.spawnEntity(handleModel);
-        handleEntity.position = [doorX + doorWidth * 0.3, doorY, doorZ - doorThickness - 0.02];
+        handleEntity.position = [doorX + cabinetDoorWidth * 0.3, doorY, doorZ - cabinetDoorThickness - 0.02];
     }
 
     const sideCabinetX = kitchenX + kitchenWidth/2 - cabinetDepth/2;
@@ -664,16 +664,16 @@ async function main() {
     sideCounterEntity.position = [sideCabinetX, cabinetHeight + counterHeight/2, sideCabinetZ];
 
     // Side cabinet door
-    const sideDoorVertices = createBoxVertices(doorThickness, doorHeight, 1.3, [1, 1, 1, 1]);
+    const sideDoorVertices = createBoxVertices(cabinetDoorThickness, cabinetDoorHeight, 1.3, [1, 1, 1, 1]);
     const sideDoorModel = new Model(scene.gl, sideDoorVertices, cabinetTexture);
     const sideDoorEntity = scene.spawnEntity(sideDoorModel);
-    sideDoorEntity.position = [sideCabinetX - cabinetDepth/2 - doorThickness/2, cabinetHeight/2, sideCabinetZ];
+    sideDoorEntity.position = [sideCabinetX - cabinetDepth/2 - cabinetDoorThickness/2, cabinetHeight/2, sideCabinetZ];
 
     // Side door handle
     const sideHandleVertices = createCylinderVertices(0.015, 0.08, 8, [0.8, 0.8, 0.8, 1]);
     const sideHandleModel = new Model(scene.gl, sideHandleVertices);
     const sideHandleEntity = scene.spawnEntity(sideHandleModel);
-    sideHandleEntity.position = [sideCabinetX - cabinetDepth/2 - doorThickness - 0.02, cabinetHeight/2, sideCabinetZ - 0.2];
+    sideHandleEntity.position = [sideCabinetX - cabinetDepth/2 - cabinetDoorThickness - 0.02, cabinetHeight/2, sideCabinetZ - 0.2];
     sideHandleEntity.rotation = [0, 0, 90];
 
     // Add full lower cabinets along the right wall
@@ -696,12 +696,12 @@ async function main() {
     // 3 doors along the right wall cabinets
     const rightWallDoorWidth = rightWallCabinetWidth / 3;
     for (let i = 0; i < 3; i++) {
-        const rightDoorX = rightWallCabinetX - cabinetDepth/2 - doorThickness/2;
+        const rightDoorX = rightWallCabinetX - cabinetDepth/2 - cabinetDoorThickness/2;
         const rightDoorY = cabinetHeight/2;
         const rightDoorZ = rightWallCabinetZ - rightWallCabinetWidth/2 + rightWallDoorWidth/2 + (i * rightWallDoorWidth);
 
         // Right wall door panel
-        const rightWallDoorVertices = createBoxVertices(doorThickness, doorHeight, rightWallDoorWidth * 0.9, [1, 1, 1, 1]);
+        const rightWallDoorVertices = createBoxVertices(cabinetDoorThickness, cabinetDoorHeight, rightWallDoorWidth * 0.9, [1, 1, 1, 1]);
         const rightWallDoorModel = new Model(scene.gl, rightWallDoorVertices, cabinetTexture);
         const rightWallDoorEntity = scene.spawnEntity(rightWallDoorModel);
         rightWallDoorEntity.position = [rightDoorX, rightDoorY, rightDoorZ];
@@ -710,7 +710,7 @@ async function main() {
         const rightWallHandleVertices = createCylinderVertices(0.015, 0.08, 8, [0.8, 0.8, 0.8, 1]);
         const rightWallHandleModel = new Model(scene.gl, rightWallHandleVertices);
         const rightWallHandleEntity = scene.spawnEntity(rightWallHandleModel);
-        rightWallHandleEntity.position = [rightDoorX - doorThickness - 0.02, rightDoorY, rightDoorZ + rightWallDoorWidth * 0.3];
+        rightWallHandleEntity.position = [rightDoorX - cabinetDoorThickness - 0.02, rightDoorY, rightDoorZ + rightWallDoorWidth * 0.3];
         rightWallHandleEntity.rotation = [0, 0, 90];
     }
 
@@ -727,9 +727,9 @@ async function main() {
         const upperDoorWidth = cabinetWidth / 2;
         const upperDoorX = counterX - cabinetWidth/4 + (i * upperDoorWidth);
         const upperDoorY = upperCabinetY;
-        const upperDoorZ = counterZ - cabinetDepth/4 + cabinetDepth/4 - doorThickness/2;
+        const upperDoorZ = counterZ - cabinetDepth/4 + cabinetDepth/4 - cabinetDoorThickness/2;
 
-        const upperDoorVertices = createBoxVertices(upperDoorWidth * 0.9, upperCabinetHeight * 0.8, doorThickness, [1, 1, 1, 1]);
+        const upperDoorVertices = createBoxVertices(upperDoorWidth * 0.9, upperCabinetHeight * 0.8, cabinetDoorThickness, [1, 1, 1, 1]);
         const upperDoorModel = new Model(scene.gl, upperDoorVertices, cabinetTexture);
         const upperDoorEntity = scene.spawnEntity(upperDoorModel);
         upperDoorEntity.position = [upperDoorX, upperDoorY, upperDoorZ];
@@ -738,7 +738,7 @@ async function main() {
         const upperHandleVertices = createCylinderVertices(0.012, 0.06, 8, [0.8, 0.8, 0.8, 1]);
         const upperHandleModel = new Model(scene.gl, upperHandleVertices);
         const upperHandleEntity = scene.spawnEntity(upperHandleModel);
-        upperHandleEntity.position = [upperDoorX + upperDoorWidth * 0.3, upperDoorY - upperCabinetHeight * 0.2, upperDoorZ - doorThickness - 0.015];
+        upperHandleEntity.position = [upperDoorX + upperDoorWidth * 0.3, upperDoorY - upperCabinetHeight * 0.2, upperDoorZ - cabinetDoorThickness - 0.015];
     }
 
     // Stove
@@ -987,7 +987,7 @@ async function main() {
 
     // Armchair positioned to face the couch
     const armchairX = recRoomX + 3;
-    const armchairZ = recRoomZ;
+    const armchairZ = recRoomZ + 3;
     const armchairSeatWidth = 1.2;
     const armchairSeatDepth = 1.0;
     
@@ -1080,9 +1080,9 @@ async function main() {
     const penguinModel = new Model(scene.gl, penguinVertices);
     const penguinEntity = scene.spawnEntity(penguinModel);
 
-    penguinEntity.position = [recRoomX + 5, 0.5, recRoomZ - 3];
-    penguinEntity.scale = [0.8, 0.8, 0.8];
-    penguinEntity.rotation = [0, 300, 0];
+    penguinEntity.position = [recRoomX + 4.5, 0.7, recRoomZ + 3.4];
+    penguinEntity.scale = [0.4, 0.4, 0.4];
+    penguinEntity.rotation = [0, 180, 0];
 
     const workingAreaX = -2;
     const workingAreaZ = 0;
@@ -1276,6 +1276,53 @@ async function main() {
     picture6Entity.position = [4, picture6YPosition, 9];
     picture6Entity.rotation = [0, 180, 0];
 
+    const doorX = 17.5;
+    const doorY = 1;
+    const doorZ = 0;
+    const doorWidth = 1.4;
+    const doorHeight = 3;
+    const doorThickness = 0.05;
+    const frameThickness = 0.08;
+    const frameWidth = 0.12;
+    
+    // Door panel (wooden door)
+    const doorPanelVertices = createBoxVertices(doorWidth, doorHeight, doorThickness, [0.6, 0.4, 0.2, 1]);
+    const doorPanelModel = new Model(scene.gl, doorPanelVertices, cabinetTexture);
+    const doorPanelEntity = scene.spawnEntity(doorPanelModel);
+    doorPanelEntity.position = [doorX - 0.05, doorY, doorZ];
+    doorPanelEntity.rotation = [0, 90, 0];
+    
+    // Door frame - left side
+    const leftDoorFrameVertices = createBoxVertices(frameWidth, doorHeight + frameWidth, frameThickness + 0.02, [0.5, 0.3, 0.15, 1]);
+    const leftDoorFrameModel = new Model(scene.gl, leftDoorFrameVertices);
+    const leftDoorFrameEntity = scene.spawnEntity(leftDoorFrameModel);
+    leftDoorFrameEntity.position = [doorX, doorY, doorZ - doorWidth/2 - frameWidth/2];
+    
+    // Door frame - right side
+    const rightDoorFrameVertices = createBoxVertices(frameWidth, doorHeight + frameWidth, frameThickness + 0.02, [0.5, 0.3, 0.15, 1]);
+    const rightDoorFrameModel = new Model(scene.gl, rightDoorFrameVertices);
+    const rightDoorFrameEntity = scene.spawnEntity(rightDoorFrameModel);
+    rightDoorFrameEntity.position = [doorX, doorY, doorZ + doorWidth/2 + frameWidth/2];
+    
+    // Door frame - top
+    const topDoorFrameVertices = createBoxVertices(frameWidth, frameWidth, doorWidth + frameWidth*2, [0.5, 0.3, 0.15, 1]);
+    const topDoorFrameModel = new Model(scene.gl, topDoorFrameVertices);
+    const topDoorFrameEntity = scene.spawnEntity(topDoorFrameModel);
+    topDoorFrameEntity.position = [doorX, doorY + doorHeight/2 + frameWidth/2, doorZ];
+    
+    // Door handle
+    const handleVertices = createCylinderVertices(0.02, 0.12, 8, [0.8, 0.8, 0.8, 1]);
+    const handleModel = new Model(scene.gl, handleVertices);
+    const handleEntity = scene.spawnEntity(handleModel);
+    handleEntity.position = [doorX - doorThickness - 0.03, doorY, doorZ - doorWidth/3];
+    handleEntity.rotation = [0, 0, 90];
+    
+    // Door lock/keyhole plate
+    const lockPlateVertices = createBoxVertices(0.08, 0.15, 0.01, [0.7, 0.7, 0.7, 1]);
+    const lockPlateModel = new Model(scene.gl, lockPlateVertices);
+    const lockPlateEntity = scene.spawnEntity(lockPlateModel);
+    lockPlateEntity.position = [doorX - doorThickness - 0.01, doorY, doorZ - doorWidth/3];
+
     const workstation1X = workingAreaX - 6;
     const workstation1Z = workingAreaZ - 8;
     const deskWidth = 1.8;
@@ -1374,7 +1421,7 @@ async function main() {
     monitor2Entity.position = [workstation2X, deskHeight + monitorStandHeight + monitorHeight/2, workstation2Z + deskDepth/2 - monitorDepth];
     
     const stand2Vertices = createCylinderVertices(0.08, monitorStandHeight, 8, [0.3, 0.3, 0.3, 1]);
-    const stand2Model = new Model(scene.gl, stand2Vertices);
+    const stand2Model = new Model(scene.gl, standVertices);
     const stand2Entity = scene.spawnEntity(stand2Model);
     stand2Entity.position = [workstation2X, deskHeight + monitorStandHeight/2, workstation2Z + deskDepth/2 - monitorDepth];
 
