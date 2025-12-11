@@ -1175,6 +1175,107 @@ async function main() {
     const headChair2Entity = scene.spawnEntity(headChair2Model);
     headChair2Entity.position = [confTableX, 0, confTableZ + confTableDepth/2 + confChairOffset];
 
+    const confTable2X = -5.10;
+    const confTable2Y = 0;
+    const confTable2Z = 7.42;
+    const confTable2Width = 6.0;
+    const confTable2Depth = 2.5;
+    const confTable2Height = 0.75;
+    const confTable2TopThickness = 0.06;
+
+    // Conference table 2 top
+    const confTable2TopVertices = createBoxVertices(confTable2Width, confTable2TopThickness, confTable2Depth, [0.6, 0.4, 0.2, 1]);
+    const confTable2TopModel = new Model(scene.gl, confTable2TopVertices);
+    const confTable2TopEntity = scene.spawnEntity(confTable2TopModel);
+    confTable2TopEntity.position = [confTable2X, confTable2Height - confTable2TopThickness/2, confTable2Z];
+
+    // Conference table 2 legs
+    const confTable2LegWidth = 0.12;
+    const confTable2LegHeight = confTable2Height - confTable2TopThickness;
+    
+    for (let i = 0; i < 3; i++) { // 3 legs along the length
+        for (let j = 0; j < 2; j++) { // 2 legs along the width
+            const legX = confTable2X - confTable2Width/2 + 0.5 + (i * (confTable2Width - 1) / 2);
+            const legZ = confTable2Z - confTable2Depth/2 + 0.3 + (j * (confTable2Depth - 0.6));
+            
+            const legVertices = createBoxVertices(confTable2LegWidth, confTable2LegHeight, confTable2LegWidth, [0.5, 0.3, 0.15, 1]);
+            const legModel = new Model(scene.gl, legVertices);
+            const legEntity = scene.spawnEntity(legModel);
+            legEntity.position = [legX, confTable2LegHeight/2, legZ];
+        }
+    }
+
+    const confChair2Offset = 0.8; // Distance from table edge to chair
+    const confChair2Spacing = 1.5; // Spacing between chairs along the table
+    
+    // Chairs along the long sides of table 2 (now front and back)
+    const numChairs2PerSide = 3;
+    
+    // Chairs on the front side of table 2
+    for (let i = 0; i < numChairs2PerSide; i++) {
+        const chairX = confTable2X - (numChairs2PerSide - 1) * confChair2Spacing/2 + (i * confChair2Spacing);
+        const chairZ = confTable2Z - confTable2Depth/2 - confChair2Offset;
+        
+        const chairVertices = createOfficeChairVertices(
+            [0.2, 0.2, 0.2, 1.0],
+            [0.1, 0.2, 0.3, 1.0],
+            [0, 0, 0],
+            0
+        );
+        const chairModel = new Model(scene.gl, chairVertices);
+        const chairEntity = scene.spawnEntity(chairModel);
+        chairEntity.position = [chairX, 0, chairZ];
+    }
+    
+    // Chairs on the back side of table 2
+    for (let i = 0; i < numChairs2PerSide; i++) {
+        const chairX = confTable2X - (numChairs2PerSide - 1) * confChair2Spacing/2 + (i * confChair2Spacing);
+        const chairZ = confTable2Z + confTable2Depth/2 + confChair2Offset;
+        
+        const chairVertices = createOfficeChairVertices(
+            [0.2, 0.2, 0.2, 1.0],
+            [0.1, 0.2, 0.3, 1.0],
+            [0, 0, 0],
+            180
+        );
+        const chairModel = new Model(scene.gl, chairVertices);
+        const chairEntity = scene.spawnEntity(chairModel);
+        chairEntity.position = [chairX, 0, chairZ];
+    }
+    
+    // Head chairs for table 2
+    const headChair3Vertices = createOfficeChairVertices(
+        [0.2, 0.2, 0.2, 1.0],
+        [0.3, 0.1, 0.1, 1.0],
+        [0, 0, 0],
+        270 // Facing towards table from the left
+    );
+    const headChair3Model = new Model(scene.gl, headChair3Vertices);
+    const headChair3Entity = scene.spawnEntity(headChair3Model);
+    headChair3Entity.position = [confTable2X - confTable2Width/2 - confChair2Offset, 0, confTable2Z];
+    
+    // Chair at positive X end of table 2
+    const headChair4Vertices = createOfficeChairVertices(
+        [0.2, 0.2, 0.2, 1.0],
+        [0.3, 0.1, 0.1, 1.0],
+        [0, 0, 0],
+        90
+    );
+    const headChair4Model = new Model(scene.gl, headChair4Vertices);
+    const headChair4Entity = scene.spawnEntity(headChair4Model);
+    headChair4Entity.position = [confTable2X + confTable2Width/2 + confChair2Offset, 0, confTable2Z];
+
+    // Picture on the wall next to the second conference table
+    const picture6Width = 2.5;
+    const picture6Height = 1.8;
+    const picture6YPosition = wallHeight / 2;
+    
+    const picture6Vertices = createPictureVertices(picture6Width, picture6Height, 0.1, [0, 0, 0]);
+    const picture6Model = new Model(scene.gl, picture6Vertices, pictureTexture4);
+    const picture6Entity = scene.spawnEntity(picture6Model);
+    picture6Entity.position = [4, picture6YPosition, 9];
+    picture6Entity.rotation = [0, 180, 0];
+
     const workstation1X = workingAreaX - 6;
     const workstation1Z = workingAreaZ - 8;
     const deskWidth = 1.8;
@@ -1277,8 +1378,7 @@ async function main() {
     const stand2Entity = scene.spawnEntity(stand2Model);
     stand2Entity.position = [workstation2X, deskHeight + monitorStandHeight/2, workstation2Z + deskDepth/2 - monitorDepth];
 
-
-    scene.camera.position = [-5, 2, 8];
+    scene.camera.position = [13, 2, 0];
     scene.camera.target = [0, 0, 0];
     scene.drawScene();
 }
