@@ -14,7 +14,7 @@ class CameraController {
         this.canvas = canvas;
         
         // Camera settings
-        this.moveSpeed = 0.15;
+        this.moveSpeed = 0.4;
         this.mouseSensitivity = 0.002;
         this.flyMode = false; // true for flying
         this.walkingHeight = 2.0; // Fixed Y position for walking mode
@@ -222,7 +222,7 @@ async function main() {
     cameraController = new CameraController(scene.camera, canvas);
 
     scene.ambient_light_color = [1, 1, 1];
-    scene.ambient_light_intensity = 0.1;
+    scene.ambient_light_intensity = 0.13;
     
     // Create office textures
     const floorTexture = createFloorTexture(scene.gl);
@@ -256,7 +256,7 @@ async function main() {
     floorEntity.scale = [officeWidth / 2, 1, officeDepth / 2];
 
     // Create ceiling
-    const ceilingVertices = createPlaneVertices(1, [1, 1, 1, 1]); // Use unit size plane
+    const ceilingVertices = createPlaneVertices(1, [1, 1, 1, 1]);
     const ceilingModel = new Model(scene.gl, ceilingVertices, ceilingTexture);
     const ceilingEntity = scene.spawnEntity(ceilingModel);
     ceilingEntity.position = [0, wallHeight, 0];
@@ -312,9 +312,7 @@ async function main() {
     picture4Entity.position = [-officeWidth / 2 + 0.05, pictureYPosition, 6];
     picture4Entity.rotation = [0, 90, 0];
 
-    const picture5Vertices = createPictureVertices(pictureWidth, pictureHeight, 0.1, [0, 0, 0]);
-    const picture5Model = new Model(scene.gl, picture1Vertices, pictureTexture1);
-    const picture5Entity = scene.spawnEntity(picture5Model);
+    const picture5Entity = scene.spawnEntity(picture1Model);
     picture5Entity.position = [-officeWidth / 2 + 0.05, pictureYPosition, -8];
     picture5Entity.rotation = [0, 90, 0];
 
@@ -464,7 +462,7 @@ async function main() {
         [0.2, 0.2, 0.2, 1.0],
         [0.1, 0.3, 0.1, 1.0],
         [0, 0, 0],
-        0 // Facing forward
+        0
     );
     const room1Chair1Model = new Model(scene.gl, room1Chair1Vertices);
     const room1Chair1Entity = scene.spawnEntity(room1Chair1Model);
@@ -475,7 +473,7 @@ async function main() {
         [0.2, 0.2, 0.2, 1.0],
         [0.1, 0.3, 0.1, 1.0],
         [0, 0, 0],
-        180 // Facing backward
+        180
     );
     const room1Chair2Model = new Model(scene.gl, room1Chair2Vertices);
     const room1Chair2Entity = scene.spawnEntity(room1Chair2Model);
@@ -641,11 +639,11 @@ async function main() {
         const doorEntity = scene.spawnEntity(doorModel);
         doorEntity.position = [doorX, doorY, doorZ];
 
-        // Door handle
-        const handleVertices = createCylinderVertices(0.015, 0.08, 8, [0.8, 0.8, 0.8, 1]);
-        const handleModel = new Model(scene.gl, handleVertices);
-        const handleEntity = scene.spawnEntity(handleModel);
-        handleEntity.position = [doorX + cabinetDoorWidth * 0.3, doorY, doorZ - cabinetDoorThickness - 0.02];
+        //// Door handle
+        //const handleVertices = createCylinderVertices(0.015, 0.08, 8, [0.8, 0.8, 0.8, 1]);
+        //const handleModel = new Model(scene.gl, handleVertices);
+        //const handleEntity = scene.spawnEntity(handleModel);
+        //handleEntity.position = [doorX + cabinetDoorWidth * 0.3, doorY, doorZ - cabinetDoorThickness - 0.02];
     }
 
     const sideCabinetX = kitchenX + kitchenWidth/2 - cabinetDepth/2;
@@ -723,9 +721,9 @@ async function main() {
     upperCabinetEntity.position = [counterX, upperCabinetY, counterZ + cabinetDepth/4];
 
     // Upper cabinet doors
-    for (let i = 0; i < 2; i++) {
-        const upperDoorWidth = cabinetWidth / 2;
-        const upperDoorX = counterX - cabinetWidth/4 + (i * upperDoorWidth);
+    for (let i = 0; i < 4; i++) {
+        const upperDoorWidth = cabinetWidth / 4;
+        const upperDoorX = counterX - cabinetWidth/4 + (i * upperDoorWidth) - 0.7;
         const upperDoorY = upperCabinetY;
         const upperDoorZ = counterZ - cabinetDepth/4 + cabinetDepth/4 - cabinetDoorThickness/2;
 
@@ -796,25 +794,18 @@ async function main() {
     ovenHandleEntity.position = [stoveX, ovenDoorY + ovenDoorHeight * 0.35, stoveZ - stoveDepth/2 - ovenDoorThickness - 0.02];
     ovenHandleEntity.rotation = [0, 0, 90];
 
-    // Oven window
-    const ovenWindowWidth = ovenDoorWidth * 0.7;
-    const ovenWindowHeight = ovenDoorHeight * 0.5;
-    const ovenWindowVertices = createBoxVertices(ovenWindowWidth, ovenWindowHeight, 0.005, [0.1, 0.1, 0.2, 0.8]);
-    const ovenWindowModel = new Model(scene.gl, ovenWindowVertices);
-    const ovenWindowEntity = scene.spawnEntity(ovenWindowModel);
-    ovenWindowEntity.position = [stoveX, ovenDoorY + 0.05, stoveZ - stoveDepth/2 - ovenDoorThickness + 0.01];
-
-    for (let i = 0; i < 4; i++) {
-        const knobX = stoveX - stoveWidth/3 + (i * stoveWidth/4.5);
-        const knobY = stoveHeight - 0.1;
-        const knobZ = stoveZ - stoveDepth/2 - 0.02;
-        
-        // Control knob
-        const knobVertices = createCylinderVertices(0.025, 0.02, 12, [0.3, 0.3, 0.3, 1]);
-        const knobModel = new Model(scene.gl, knobVertices);
-        const knobEntity = scene.spawnEntity(knobModel);
-        knobEntity.position = [knobX, knobY, knobZ];
-    }
+    // knobs
+    //for (let i = 0; i < 4; i++) {
+    //    const knobX = stoveX - stoveWidth/3 + (i * stoveWidth/4.5);
+    //    const knobY = stoveHeight - 0.1;
+    //    const knobZ = stoveZ - stoveDepth/2 - 0.02;
+    //    
+    //    // Control knob
+    //    const knobVertices = createCylinderVertices(0.025, 0.02, 12, [0.3, 0.3, 0.3, 1]);
+    //    const knobModel = new Model(scene.gl, knobVertices);
+    //    const knobEntity = scene.spawnEntity(knobModel);
+    //    knobEntity.position = [knobX, knobY, knobZ];
+    //}
 
     // Circular kitchen table in the open area
     const tableRadius = 1.2; // Radius of the circular table top
@@ -1249,7 +1240,7 @@ async function main() {
         [0.2, 0.2, 0.2, 1.0],
         [0.3, 0.1, 0.1, 1.0],
         [0, 0, 0],
-        270 // Facing towards table from the left
+        270
     );
     const headChair3Model = new Model(scene.gl, headChair3Vertices);
     const headChair3Entity = scene.spawnEntity(headChair3Model);
@@ -1315,14 +1306,13 @@ async function main() {
     const handleVertices = createCylinderVertices(0.02, 0.12, 8, [0.8, 0.8, 0.8, 1]);
     const handleModel = new Model(scene.gl, handleVertices);
     const handleEntity = scene.spawnEntity(handleModel);
-    handleEntity.position = [doorX - doorThickness - 0.03, doorY, doorZ - doorWidth/3];
+    handleEntity.position = [doorX - doorThickness - 0.03, doorY + 0.3, doorZ - doorWidth/3];
     handleEntity.rotation = [0, 0, 90];
     
-    // Door lock/keyhole plate
-    const lockPlateVertices = createBoxVertices(0.08, 0.15, 0.01, [0.7, 0.7, 0.7, 1]);
-    const lockPlateModel = new Model(scene.gl, lockPlateVertices);
-    const lockPlateEntity = scene.spawnEntity(lockPlateModel);
-    lockPlateEntity.position = [doorX - doorThickness - 0.01, doorY, doorZ - doorWidth/3];
+    //const lockPlateVertices = createBoxVertices(0.08, 0.15, 0.01, [0.7, 0.7, 0.7, 1]);
+    //const lockPlateModel = new Model(scene.gl, lockPlateVertices);
+    //const lockPlateEntity = scene.spawnEntity(lockPlateModel);
+    //lockPlateEntity.position = [doorX - doorThickness - 0.01, doorY, doorZ - doorWidth/3];
 
     const workstation1X = workingAreaX - 6;
     const workstation1Z = workingAreaZ - 8;
@@ -1427,7 +1417,7 @@ async function main() {
     stand2Entity.position = [workstation2X, deskHeight + monitorStandHeight/2, workstation2Z + deskDepth/2 - monitorDepth];
 
     // Create ceiling lights throughout the office
-    createCeilingLights(scene, wallHeight, officeWidth, officeDepth);
+    createCeilingLights(scene, wallHeight);
 
     scene.camera.position = [13, 2, 0];
     scene.camera.target = [0, 0, 0];
@@ -1435,10 +1425,9 @@ async function main() {
 }
 
 /**
- * Create ceiling light fixtures for the office
  * @param {Scene} scene 
  */
-function createCeilingLights(scene, wallHeight, officeWidth, officeDepth) {
+function createCeilingLights(scene, wallHeight) {
     const lightHeight = wallHeight - 0.2; // Slightly below ceiling
     const lightWidth = 2.5;
     const lightDepth = 0.6;
@@ -1448,33 +1437,32 @@ function createCeilingLights(scene, wallHeight, officeWidth, officeDepth) {
     const mainAreaLights = [
         [-8, -6], [-8, 0], [-8, 6],
         //[-2, -6], [-2, 0], [-2, 6],
-        [2, -6], [2, 0], [2, 6],
+        [2, -6], [2, 0], [2, 6]
         //[8, -6], [8, 0], [8, 6]
     ];
     
     mainAreaLights.forEach(([x, z]) => {
         createSingleCeilingLight(x, lightHeight, z, lightWidth, lightDepth, lightThickness, wallHeight);
+        // yeah I know the only one light is working but thats all I want so im not fixing the bug
         addLightCeilingLightsToScene(scene, x, lightHeight - 0.1, z);
     });
     
     // Kitchen area lights - exact same positions as point lights
     const kitchenLights = [
-        [11, 6],// [15, 6],
+        [11, 6]// [15, 6],
     ];
     
     kitchenLights.forEach(([x, z]) => {
         createSingleCeilingLight(x, lightHeight, z, lightWidth, lightDepth, lightThickness, wallHeight);
-        addLightCeilingLightsToScene(scene, x, lightHeight - 0.1, z);
     });
     
     // Recreation room lights - exact same positions as point lights
     const recRoomLights = [
-        [11, -6],// [15, -6]
+        [11, -6]// [15, -6]
     ];
     
     recRoomLights.forEach(([x, z]) => {
         createSingleCeilingLight(x, lightHeight, z, lightWidth, lightDepth, lightThickness, wallHeight);
-        addLightCeilingLightsToScene(scene, x, lightHeight - 0.1, z);
     });
     
     // Meeting room lights - exact same positions as point lights
@@ -1486,7 +1474,6 @@ function createCeilingLights(scene, wallHeight, officeWidth, officeDepth) {
     
     meetingRoomLights.forEach(([x, z]) => {
         createSingleCeilingLight(x, lightHeight, z, lightWidth * 0.8, lightDepth, lightThickness, wallHeight);
-        addLightCeilingLightsToScene(scene, x, lightHeight - 0.1, z);
     });
 }
 
@@ -1498,7 +1485,7 @@ function addLightCeilingLightsToScene(scene, x, y, z) {
     scene.addLightSource(
         [x, y, z],
         [1.0, 1.0, 0.9],
-        0.4,
+        0.6
     )
 }
 
@@ -1560,15 +1547,15 @@ function createPenguinVertices() {
     // edge of toque
     vertices.push(...createTorusVertices(0.27, 0.05, 20, 20, [1, 1, 0.1, 1], [0, 0.9, 0]));
     // sphere thing on edge of toque
-    vertices.push(...createSphereVertices(0.08, 10, 10, [1, 1, 0.1, 1], [0, 0.9, 0.4]));
+    vertices.push(...createSphereVertices(0.08, 10, 10, [1, 1, 0.1, 1], [0, 0.9, 0.3]));
 
     // eyes
     vertices.push(...createSphereVertices(0.1, 5, 10, [1, 1, 1, 1], [ 0.15, 0.8, 0.18]));
     vertices.push(...createSphereVertices(0.1, 5, 10, [1, 1, 1, 1], [-0.15, 0.8, 0.18]));
 
-    // pupils
-    vertices.push(...createSphereVertices(0.05, 5, 10, [0, 0, 0, 1], [ 0.15, 0.8, 0.25]));
-    vertices.push(...createSphereVertices(0.05, 5, 10, [0, 0, 0, 1], [-0.15, 0.8, 0.25]));
+    //// pupils
+    //vertices.push(...createSphereVertices(0.05, 5, 10, [0, 0, 0, 1], [ 0.15, 0.8, 0.25]));
+    //vertices.push(...createSphereVertices(0.05, 5, 10, [0, 0, 0, 1], [-0.15, 0.8, 0.25]));
 
     // beak
     // two triangles forming a flat beak

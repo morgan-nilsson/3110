@@ -48,14 +48,15 @@ const VSHADER = `
         // Start with ambient lighting
         vec3 lighting = u_AmbientColor;
 
-        // Calculate directional lights
-        for (int i = 0; i < MAX_DIRECTIONAL_LIGHTS; i++) {
-            if (i >= u_numDirectionalLights) break;
-            
-                        vec3 lightDir = normalize(-u_directionalLightDirections[i]);
-            float diff = max(dot(normal, lightDir), 0.0);
-            lighting += u_directionalLightColors[i] * u_directionalLightIntensities[i] * diff;
-        }
+        // commented out for optimization
+        //// Calculate directional lights
+        //for (int i = 0; i < MAX_DIRECTIONAL_LIGHTS; i++) {
+        //    if (i >= u_numDirectionalLights) break;
+        //    
+        //                vec3 lightDir = normalize(-u_directionalLightDirections[i]);
+        //    float diff = max(dot(normal, lightDir), 0.0);
+        //    lighting += u_directionalLightColors[i] * u_directionalLightIntensities[i] * diff;
+        //}
 
         // Calculate point lights
         for (int i = 0; i < MAX_POINT_LIGHTS; i++) {

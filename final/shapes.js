@@ -755,13 +755,13 @@ function createOfficeChairVertices(baseColor = [0.2, 0.2, 0.2, 1.0], seatColor =
     });
     vertices.push(...seatVertices);
     
-    // Seat cushion border
-    const seatBorderVertices = createBoxVertices(seatWidth + 0.02, seatThickness * 0.3, seatDepth + 0.02, [seatColor[0] * 0.8, seatColor[1] * 0.8, seatColor[2] * 0.8, seatColor[3]]);
-    seatBorderVertices.forEach(vertex => {
-        const [newX, newY, newZ] = rotateAndOffset(vertex.position[0], vertex.position[1] + seatHeight + seatThickness/2, vertex.position[2]);
-        vertex.position = [newX, newY, newZ];
-    });
-    vertices.push(...seatBorderVertices);
+    //// Seat cushion border
+    //const seatBorderVertices = createBoxVertices(seatWidth + 0.02, seatThickness * 0.3, seatDepth + 0.02, [seatColor[0] * 0.8, seatColor[1] * 0.8, seatColor[2] * 0.8, seatColor[3]]);
+    //seatBorderVertices.forEach(vertex => {
+    //    const [newX, newY, newZ] = rotateAndOffset(vertex.position[0], vertex.position[1] + seatHeight + seatThickness/2, vertex.position[2]);
+    //    vertex.position = [newX, newY, newZ];
+    //});
+    //vertices.push(...seatBorderVertices);
     
     // Backrest
     const backrestX = 0;
@@ -775,13 +775,13 @@ function createOfficeChairVertices(baseColor = [0.2, 0.2, 0.2, 1.0], seatColor =
     });
     vertices.push(...backrestVertices);
     
-    // Lumbar support
-    const lumbarVertices = createBoxVertices(backrestWidth * 0.7, backrestHeight * 0.3, backrestThickness * 0.5, [seatColor[0] * 1.1, seatColor[1] * 1.1, seatColor[2] * 1.1, seatColor[3]]);
-    lumbarVertices.forEach(vertex => {
-        const [newX, newY, newZ] = rotateAndOffset(vertex.position[0] + backrestX, vertex.position[1] + seatHeight + 0.15, vertex.position[2] + backrestZ + 0.02);
-        vertex.position = [newX, newY, newZ];
-    });
-    vertices.push(...lumbarVertices);
+    //// Lumbar support
+    //const lumbarVertices = createBoxVertices(backrestWidth * 0.7, backrestHeight * 0.3, backrestThickness * 0.5, [seatColor[0] * 1.1, seatColor[1] * 1.1, seatColor[2] * 1.1, seatColor[3]]);
+    //lumbarVertices.forEach(vertex => {
+    //    const [newX, newY, newZ] = rotateAndOffset(vertex.position[0] + backrestX, vertex.position[1] + seatHeight + 0.15, vertex.position[2] + backrestZ + 0.02);
+    //    vertex.position = [newX, newY, newZ];
+    //});
+    //vertices.push(...lumbarVertices);
     
     const postRadius = 0.028;
     const postHeight = seatHeight - 0.18;
