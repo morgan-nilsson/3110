@@ -626,6 +626,26 @@ class CameraBuilder {
     }
 
     /**
+     * Set the near clipping plane
+     * @param {number} near
+     * @returns 
+     */
+    near(near) {
+        this.camera.near = near;
+        return this;
+    }
+
+    /**
+     * Set the far clipping plane
+     * @param {number} far
+     * @returns 
+     */
+    far(far) {
+        this.camera.far = far;
+        return this;
+    }
+
+    /**
      * Position camera in orbit around point
      * @param {number} centerX - Center X coordinate
      * @param {number} centerY - Center Y coordinate
