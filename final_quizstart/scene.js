@@ -853,6 +853,46 @@ class EntityBuilder {
     }
 
     /**
+     * Set entity color by name
+     * @param {string} name - Color name
+     * @returns {EntityBuilder} This builder
+     */
+    namedColor(name) {
+        const colors = {
+            'red': [1, 0, 0, 1], 
+            'green': [0, 1, 0, 1], 
+            'blue': [0, 0, 1, 1],
+            'yellow': [1, 1, 0, 1], 
+            'white': [1, 1, 1, 1], 
+            'black': [0, 0, 0, 1],
+            'gray': [0.5, 0.5, 0.5, 1], 
+            'grey': [0.5, 0.5, 0.5, 1],
+            'brown': [0.4, 0.2, 0.1, 1],
+            'orange': [1, 0.5, 0, 1], 
+            'purple': [0.5, 0, 0.5, 1],
+            'pink': [1, 0.5, 0.8, 1], 
+            'cyan': [0, 1, 1, 1],
+            'magenta': [1, 0, 1, 1],
+            'lime': [0.5, 1, 0, 1],
+            'indigo': [0.3, 0, 0.5, 1],
+            'violet': [0.5, 0, 1, 1],
+            'maroon': [0.5, 0, 0, 1],
+            'navy': [0, 0, 0.5, 1],
+            'teal': [0, 0.5, 0.5, 1],
+            'silver': [0.75, 0.75, 0.75, 1],
+            'gold': [1, 0.84, 0, 1]
+        };
+        
+        if (colors[name.toLowerCase()]) {
+            this._color = colors[name.toLowerCase()];
+        } else {
+            console.warn(`Unknown color name: ${name}, using white`);
+            this._color = [1, 1, 1, 1];
+        }
+        return this;
+    }
+
+    /**
      * Set entity texture
      * @param {string|WebGLTexture} textureOrPath - Texture or path
      * @returns {EntityBuilder} This builder
